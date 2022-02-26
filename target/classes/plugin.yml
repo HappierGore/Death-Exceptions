@@ -1,0 +1,14 @@
+name: DeathExceptions
+version: 1.0
+main: com.happiergore.deathexceptions.EventListener
+api-version: 1.18
+author: HappierGore
+discord: HappierGore#1197
+prefix: DeathExceptions
+website: https://github.com/HappierGore
+depend: [NBTAPI]
+commands:     
+  itemkeep:
+    description: Hace el item no dropeable
+        
+        
