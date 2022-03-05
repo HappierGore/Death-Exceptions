@@ -33,12 +33,13 @@ public final class OnDeathPlayer {
                 NBTItem nbt = new NBTItem(item);
                 if (nbt.hasKey("keepInventory")) {
                     userData.itemsToRespawn.add(item);
+                    return;
                 }
 
                 //Add ignore NBT, Enchantments, name, lore option.
                 //Add GUI menu
                 //Prevent reset dropData if reload (Save another DB with userInfo), like PlayerVaults
-                if (ItemUtils.compareItemInDB(item)) {                    
+                if (UserData.itemsDB.contains(ItemUtils.fixItem(item))) {
                     userData.itemsToRespawn.add(item);
                 }
 

@@ -8,7 +8,6 @@ import de.tr7zw.nbtapi.NBTItem;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -30,6 +29,7 @@ public class ItemUtils {
 
         if (displayName != null) {
             itemMeta.setDisplayName(displayName);
+            item.setItemMeta(itemMeta);
         }
         if (lore != null) {
             //Creating the result
@@ -43,19 +43,7 @@ public class ItemUtils {
                 lores.addAll(Arrays.asList(loreDB));
                 itemMeta.setLore(lores);
             }
-        }
-        if (nbt != null) {
-
-            if (!nbt.equals("{}")) {
-                String nbtFixed = nbt.replace("{", "").replace("}", "").replace("\"\"", "");
-                NBTItem nbtItem = new NBTItem(item);
-                for (String entry : nbtFixed.split(",")) {
-                    String key = entry.split(":")[0];
-                    String info = entry.split(":")[1];
-                    nbtItem.setString(key, info);
-                }
-                item = nbtItem.getItem();
-            }
+            item.setItemMeta(itemMeta);
         }
 
         if (enchantments != null) {
@@ -64,16 +52,40 @@ public class ItemUtils {
                 int level = Integer.parseInt(input.split(":")[1]);
                 itemMeta.addEnchant(enchant, level, true);
             }
+            item.setItemMeta(itemMeta);
         }
 
-        item.setItemMeta(itemMeta);
+        if (nbt != null) {
+
+            NBTItem nbtItem = new NBTItem(item);
+            for (String entry : nbt.split(";")) {
+                String dataType = entry.split(":")[1];
+                String key = entry.split(":")[0];
+                String info = entry.split(":")[2];
+
+                switch (dataType) {
+                    case "String" -> {
+                        nbtItem.setString(key, info);
+                    }
+                    case "Integer" -> {
+                        nbtItem.setInteger(key, Integer.parseInt(info));
+                    }
+                    case "Float" -> {
+                        nbtItem.setFloat(key, Float.parseFloat(info));
+                    }
+                }
+
+            }
+
+            System.out.println("FINAL NBT ITEM FROM CREATION: " + nbtItem.toString());
+            item = nbtItem.getItem();
+
+        }
 
         return item;
     }
 
-    //Compare everything, but ignoring UUID nbt
-    public static boolean compareItemInDB(ItemStack item) {
-
+    public static ItemStack fixItem(ItemStack item) {
         StringBuilder ench = new StringBuilder();
 
         item.getEnchantments().entrySet().forEach((t) -> {
@@ -87,13 +99,55 @@ public class ItemUtils {
         String LORE = item.getItemMeta().getLore() != null ? String.join(";", item.getItemMeta().getLore()) : null;
 
         NBTItem nbtItem = new NBTItem(item);
-        //Tags to ignore
-        nbtItem.removeKey("UUID");
-        String NBT = !nbtItem.toString().equals("{}") ? nbtItem.toString() : null;
 
-        ItemStack finalItem = createItem(MATERIAL, DISPLAYNAME, LORE, NBT, ENCHANTMENTS);
+        List<String> exceptions = new ArrayList<>();
+        exceptions.add("UUID");
 
-        return UserData.itemsDB.contains(finalItem);
+        String NBT = FilterNBT(item, exceptions);
+        //System.out.println("Fixed Item: " + NBT);
+
+        return createItem(MATERIAL, DISPLAYNAME, LORE, NBT, ENCHANTMENTS);
+    }
+
+    public static String FilterNBT(ItemStack item, List<String> otherExceptions) {
+        NBTItem nbtItem = new NBTItem(item);
+
+        StringBuilder nbtNormal = new StringBuilder();
+
+        List<String> ignoreKeys = new ArrayList<>();
+        ignoreKeys.add("Enchantments");
+        ignoreKeys.add("display");
+
+        if (otherExceptions != null) {
+            ignoreKeys.addAll(otherExceptions);
+        }
+
+        nbtItem.getKeys().forEach(key -> {
+            if (!ignoreKeys.contains(key)) {
+                //System.out.println("KEY: " + key);
+                nbtNormal.append(key).append(":");
+                switch (nbtItem.getType(key)) {
+                    case NBTTagString -> {
+                        nbtNormal.append("String:").append(nbtItem.getString(key));
+                    }
+                    case NBTTagInt -> {
+                        nbtNormal.append("Integer:").append(nbtItem.getInteger(key));
+                    }
+                    case NBTTagFloat -> {
+                        nbtNormal.append("Float:").append(nbtItem.getFloat(key));
+                    }
+                }
+                nbtNormal.append(";");
+            }
+
+        });
+        return nbtNormal.toString().trim().equals("") ? null : nbtNormal.toString();
+    }
+
+    public static List<ItemStack> cloneDBItems() {
+        List<ItemStack> newList = new ArrayList<>();
+        newList.addAll(UserData.itemsDB);
+        return newList;
     }
 
 }

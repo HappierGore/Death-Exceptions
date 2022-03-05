@@ -19,6 +19,8 @@ public class ItemDB extends MySQLite {
 
     public void loadAllData() {
 
+        UserData.itemsDB.clear();
+
         String sql = "SELECT * FROM " + this.table;
 
         try ( Connection conn = this.connect();  PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -32,13 +34,19 @@ public class ItemDB extends MySQLite {
                 String lore = rs.getString("lore");
                 String nbt = rs.getString("nbt");
                 String enchantments = rs.getString("enchantments");
-               
-                UserData.itemsDB.add(ItemUtils.createItem(material, displayName, lore, nbt, enchantments));
+
+//                System.out.println("INFORMATION FROM DATABASE:");
+//                System.out.println("MATERIAL: " + material);
+//                System.out.println("DISPLAYNAME: " + displayName);
+//                System.out.println("LORE: " + lore);
+//                System.out.println("NBT: " + nbt);
+//                System.out.println("ENCHANTMENTS: " + enchantments);
+
+                UserData.itemsDB.add(ItemUtils.fixItem(ItemUtils.createItem(material, displayName, lore, nbt, enchantments)));
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
-
 }

@@ -4,7 +4,9 @@
  */
 package com.happiergore.deathexceptions;
 
-import commands.ItemKeepInventory;
+import commands.DeathExceptions;
+import commands.argsAutocomplete;
+import events.CloseGUI;
 import events.OnDeathPlayer;
 import events.OnRespawnPlayer;
 import static helper.IOHelper.ExportResource;
@@ -18,6 +20,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -73,8 +76,6 @@ public class EventListener extends JavaPlugin implements Listener {
     //****************
     // EVENTOS
     //****************
-    String dbPath = getDataFolder().getAbsolutePath();
-
     @EventHandler
     public void PlayerDeathEvent(PlayerDeathEvent e) {
         OnDeathPlayer.registerKill(e);
@@ -85,9 +86,16 @@ public class EventListener extends JavaPlugin implements Listener {
         OnRespawnPlayer.onRespawnPlayer(e);
     }
 
+    @EventHandler
+    public void InventoryCloseEvent(InventoryCloseEvent e) {
+        CloseGUI.onCloseInv(e);
+    }
+
     //********************
     //Own functions
     //********************
+    String dbPath = getDataFolder().getAbsolutePath();
+
     private void generateDB() {
         String path = getDataFolder().getAbsolutePath();
 
@@ -115,6 +123,7 @@ public class EventListener extends JavaPlugin implements Listener {
     }
 
     private void registerCommands() {
-        this.getCommand("itemkeep").setExecutor(new ItemKeepInventory());
+        this.getCommand("deathexceptions").setTabCompleter(new argsAutocomplete());
+        this.getCommand("deathexceptions").setExecutor(new DeathExceptions());
     }
 }

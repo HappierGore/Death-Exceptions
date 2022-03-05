@@ -8,7 +8,6 @@ prefix: DeathExceptions
 website: https://github.com/HappierGore
 depend: [NBTAPI]
 commands:     
-  itemkeep:
-    description: Hace el item no dropeable
-        
-        
+  deathExceptions:
+    description: Comando principal   
+    aliases: [de]

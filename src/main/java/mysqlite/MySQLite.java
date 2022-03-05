@@ -46,8 +46,7 @@ public abstract class MySQLite {
         String DISPLAYNAME = !item.getItemMeta().getDisplayName().equals("") ? item.getItemMeta().getDisplayName() : null;
         String LORE = item.getItemMeta().getLore() != null ? String.join(";", item.getItemMeta().getLore()) : null;
 
-        NBTItem nbtItem = new NBTItem(item);
-        String NBT = !nbtItem.toString().equals("{}") ? nbtItem.toString() : null;
+        String NBT = ItemUtils.FilterNBT(item, null);
 
         String sql = "INSERT INTO " + table + "(material, displayname, lore, nbt, enchantments) VALUES(?, ?, ?, ?, ?)";
 
@@ -68,18 +67,35 @@ public abstract class MySQLite {
         }
     }
 
-    public void remove(String MATERIAL, String DISPLAYNAME, String LORE, String NBT) {
+    public void remove(ItemStack item) {
 
-        String sql = "DELETE FROM " + table + " WHERE material = ?, display = ?, lore = ?, nbt = ?";
+        StringBuilder ench = new StringBuilder();
 
-        System.out.println(sql);
+        item.getEnchantments().entrySet().forEach((t) -> {
+            ench.append(t.getKey().getKey().getKey()).append(":").append(t.getValue()).append(";");
+        });
+
+        String ENCHANTMENTS = ench.toString().trim().equals("") ? null : ench.toString();
+
+        String MATERIAL = item.getType().toString();
+        String DISPLAYNAME = !item.getItemMeta().getDisplayName().equals("") ? item.getItemMeta().getDisplayName() : null;
+        String LORE = item.getItemMeta().getLore() != null ? String.join(";", item.getItemMeta().getLore()) : null;
+
+        NBTItem nbtItem = new NBTItem(item);
+        String NBT = ItemUtils.FilterNBT(item, null);
+
+        String sql = "DELETE FROM " + table + " WHERE enchantments is ? AND material is ? AND displayname is ? AND lore is ? AND nbt is ?";
 
         try ( Connection conn = this.connect();  PreparedStatement db = conn.prepareStatement(sql)) {
             // set the corresponding param
-            db.setString(1, MATERIAL);
-            db.setString(2, DISPLAYNAME);
-            db.setString(3, LORE);
-            db.setString(4, NBT);
+            db.setString(1, ENCHANTMENTS);
+            db.setString(2, MATERIAL);
+            db.setString(3, DISPLAYNAME);
+            db.setString(4, LORE);
+            db.setString(5, NBT);
+
+            UserData.itemsDB.remove(item);
+
             db.executeUpdate();
 
         } catch (SQLException e) {
