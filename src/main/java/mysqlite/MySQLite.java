@@ -1,6 +1,7 @@
 package mysqlite;
 
 import de.tr7zw.nbtapi.NBTItem;
+import helper.DEXItem;
 import helper.ItemUtils;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -33,35 +34,22 @@ public abstract class MySQLite {
     }
 
     public void addItem(ItemStack item) {
-
-        StringBuilder ench = new StringBuilder();
-
-        item.getEnchantments().entrySet().forEach((t) -> {
-            ench.append(t.getKey().getKey().getKey()).append(":").append(t.getValue()).append(";");
-        });
-
-        String ENCHANTMENTS = ench.toString().trim().equals("") ? null : ench.toString();
-
-        String MATERIAL = item.getType().toString();
-        String DISPLAYNAME = !item.getItemMeta().getDisplayName().equals("") ? item.getItemMeta().getDisplayName() : null;
-        String LORE = item.getItemMeta().getLore() != null ? String.join(";", item.getItemMeta().getLore()) : null;
-
-        String NBT = ItemUtils.FilterNBT(item, null);
+        DEXItem fixedItem = new DEXItem(item);
 
         String sql = "INSERT INTO " + table + "(material, displayname, lore, nbt, enchantments) VALUES(?, ?, ?, ?, ?)";
 
         try ( Connection conn = connect();  PreparedStatement db = conn.prepareStatement(sql)) {
 
             // set the corresponding param
-            db.setString(1, MATERIAL);
-            db.setString(2, DISPLAYNAME);
-            db.setString(3, LORE);
-            db.setString(4, NBT);
-            db.setString(5, ENCHANTMENTS);
+            db.setString(1, fixedItem.MATERIAL);
+            db.setString(2, fixedItem.DISPLAYNAME);
+            db.setString(3, fixedItem.LORE);
+            db.setString(4, fixedItem.NBT);
+            db.setString(5, fixedItem.ENCHANTMENTS);
 
             // update 
             db.executeUpdate();
-            UserData.itemsDB.add(ItemUtils.createItem(MATERIAL, DISPLAYNAME, LORE, NBT, ENCHANTMENTS));
+            UserData.itemsDB.add(fixedItem.getItem());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -69,32 +57,19 @@ public abstract class MySQLite {
 
     public void remove(ItemStack item) {
 
-        StringBuilder ench = new StringBuilder();
-
-        item.getEnchantments().entrySet().forEach((t) -> {
-            ench.append(t.getKey().getKey().getKey()).append(":").append(t.getValue()).append(";");
-        });
-
-        String ENCHANTMENTS = ench.toString().trim().equals("") ? null : ench.toString();
-
-        String MATERIAL = item.getType().toString();
-        String DISPLAYNAME = !item.getItemMeta().getDisplayName().equals("") ? item.getItemMeta().getDisplayName() : null;
-        String LORE = item.getItemMeta().getLore() != null ? String.join(";", item.getItemMeta().getLore()) : null;
-
-        NBTItem nbtItem = new NBTItem(item);
-        String NBT = ItemUtils.FilterNBT(item, null);
+        DEXItem fixedItem = new DEXItem(item);
 
         String sql = "DELETE FROM " + table + " WHERE enchantments is ? AND material is ? AND displayname is ? AND lore is ? AND nbt is ?";
 
         try ( Connection conn = this.connect();  PreparedStatement db = conn.prepareStatement(sql)) {
             // set the corresponding param
-            db.setString(1, ENCHANTMENTS);
-            db.setString(2, MATERIAL);
-            db.setString(3, DISPLAYNAME);
-            db.setString(4, LORE);
-            db.setString(5, NBT);
+            db.setString(1, fixedItem.ENCHANTMENTS);
+            db.setString(2, fixedItem.MATERIAL);
+            db.setString(3, fixedItem.DISPLAYNAME);
+            db.setString(4, fixedItem.LORE);
+            db.setString(5, fixedItem.NBT);
 
-            UserData.itemsDB.remove(item);
+            UserData.itemsDB.remove(fixedItem.getItem());
 
             db.executeUpdate();
 

@@ -1,5 +1,6 @@
 package mysqlite;
 
+import helper.DEXItem;
 import helper.ItemUtils;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -35,14 +36,7 @@ public class ItemDB extends MySQLite {
                 String nbt = rs.getString("nbt");
                 String enchantments = rs.getString("enchantments");
 
-//                System.out.println("INFORMATION FROM DATABASE:");
-//                System.out.println("MATERIAL: " + material);
-//                System.out.println("DISPLAYNAME: " + displayName);
-//                System.out.println("LORE: " + lore);
-//                System.out.println("NBT: " + nbt);
-//                System.out.println("ENCHANTMENTS: " + enchantments);
-
-                UserData.itemsDB.add(ItemUtils.fixItem(ItemUtils.createItem(material, displayName, lore, nbt, enchantments)));
+                UserData.itemsDB.add(new DEXItem(enchantments, material, displayName, lore, nbt).getItem());
             }
 
         } catch (SQLException e) {

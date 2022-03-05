@@ -1,6 +1,7 @@
 package events;
 
 import de.tr7zw.nbtapi.NBTItem;
+import helper.DEXItem;
 import helper.ItemUtils;
 import java.util.List;
 import org.bukkit.entity.Player;
@@ -36,13 +37,11 @@ public final class OnDeathPlayer {
                     return;
                 }
 
-                //Add ignore NBT, Enchantments, name, lore option.
-                //Add GUI menu
+                //Add ignore NBT, Enchantments, name, lore option. with gui menu
                 //Prevent reset dropData if reload (Save another DB with userInfo), like PlayerVaults
-                if (UserData.itemsDB.contains(ItemUtils.fixItem(item))) {
+                if (UserData.itemsDB.contains(new DEXItem(item).getItem())) {
                     userData.itemsToRespawn.add(item);
                 }
-
             });
 
             userData.itemsToRespawn.forEach(item -> {

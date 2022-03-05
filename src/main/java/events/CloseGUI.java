@@ -2,7 +2,13 @@ package events;
 
 import commands.GUIManager;
 import helper.ItemUtils;
+import helper.TextUtils;
+import java.util.ArrayList;
+import java.util.List;
 import mysqlite.ItemDB;
+import org.bukkit.Material;
+import org.bukkit.Tag;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import user.UserData;
 
@@ -15,21 +21,15 @@ public class CloseGUI {
 
     public static void onCloseInv(InventoryCloseEvent e) {
 
-        System.out.println("Fase 1");
-
         if (!GUIManager.currentData.containsKey(e.getPlayer().getUniqueId().toString())) {
             return;
         }
-
-        System.out.println("Fase 2");
 
         GUIManager guiManager = GUIManager.getObj(e.getPlayer().getUniqueId().toString());
 
         if (!e.getInventory().equals(guiManager.inv)) {
             return;
         }
-
-        System.out.println("Fase 3");
 
         ItemDB itemDB = new ItemDB();
 
@@ -40,28 +40,27 @@ public class CloseGUI {
             }
         });
 
+        List<Material> noValidMaterial = new ArrayList<>();
+        noValidMaterial.add(Material.ENCHANTED_BOOK);
+        noValidMaterial.add(Material.POTION);
+        noValidMaterial.add(Material.WRITTEN_BOOK);
+        noValidMaterial.add(Material.MAP);
+        noValidMaterial.addAll(Tag.SHULKER_BOXES.getValues());
+
         //When item is added
         e.getInventory().forEach(item -> {
-            if (item != null && !UserData.itemsDB.contains(item)) {
-                itemDB.addItem(item);
+            if (item != null) {
+                if (noValidMaterial.contains(item.getType())) {
+                    e.getPlayer().sendMessage(TextUtils.parseColor("&cDeath Exceptions lite no soporta los items de tipo " + item.getType().toString()));
+                    e.getPlayer().getInventory().addItem(item);
+                    return;
+                }
+                if (!UserData.itemsDB.contains(item)) {
+                    itemDB.addItem(item);
+                }
             }
         });
 
         GUIManager.currentData.remove(e.getPlayer().getUniqueId().toString());
-
-        //itemDB.loadAllData();
-//        e.getInventory().forEach(item -> {
-//            if (!UserData.itemsDB.contains(item)) {
-//                itemDB.addItem(item);
-//            }
-//        });
     }
-
-    // Cancel dragging in our inventory
-//    @EventHandler
-//    public void onInventoryClick(final InventoryDragEvent e) {
-//        if (e.getInventory().equals(inv)) {
-//            e.setCancelled(true);
-//        }
-//    }
 }

@@ -26,10 +26,6 @@ public class AddItem {
 
         new ItemDB().addItem(player.getInventory().getItemInMainHand());
 
-        UserData.itemsDB.forEach(entry -> {
-            player.getInventory().addItem(entry);
-        });
-
         player.sendMessage(TextUtils.parseColor("&aSe ha añadido el objeto de tu mano a la base de datos para prevenir su dropeo!"));
 
     }
