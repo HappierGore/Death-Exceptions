@@ -1,6 +1,7 @@
 package events;
 
 import de.tr7zw.nbtapi.NBTItem;
+import helper.ItemUtils;
 import java.util.List;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -33,6 +34,14 @@ public final class OnDeathPlayer {
                 if (nbt.hasKey("keepInventory")) {
                     userData.itemsToRespawn.add(item);
                 }
+
+                //Add ignore NBT, Enchantments, name, lore option.
+                //Add GUI menu
+                //Prevent reset dropData if reload (Save another DB with userInfo), like PlayerVaults
+                if (ItemUtils.compareItemInDB(item)) {                    
+                    userData.itemsToRespawn.add(item);
+                }
+
             });
 
             userData.itemsToRespawn.forEach(item -> {
