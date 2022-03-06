@@ -34,8 +34,9 @@ public final class ConfigItems {
     //   LOADING FUNCTIONS
     //***********************
     private void loadNBTItems(ItemStack configureItem, Inventory inventory) {
-        enableNBT = new EnableNBT(configureItem, inventory, 0);
-        disableNBT = new DisableNBT(configureItem, inventory, 0);
+        int slot = 11;
+        enableNBT = new EnableNBT(configureItem, inventory, slot);
+        disableNBT = new DisableNBT(configureItem, inventory, slot);
 
         this.disableNBT.itemsToChange.add(this.enableNBT);
         this.enableNBT.itemsToChange.add(this.disableNBT);
