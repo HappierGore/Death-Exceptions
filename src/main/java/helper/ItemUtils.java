@@ -38,7 +38,6 @@ public class ItemUtils {
             List<ItemFlags> flags = itemDB.getFlags(UserData.itemsDB.get(i));
 
             //System.out.println("Flags: " + flags.toString() + "\n");
-
             ItemMeta metaFiltered = itemInDB.getItemMeta();
             ItemMeta metaDropped = itemDropped.getItemMeta();
 
@@ -66,6 +65,9 @@ public class ItemUtils {
                             }
                             ENCHOK = true;
                         }
+                    } else {
+//                        System.out.println("NO enchantments");
+                        ENCHOK = !(metaFiltered.hasEnchants() || metaDropped.hasEnchants());
                     }
                 }
 
@@ -77,7 +79,11 @@ public class ItemUtils {
 
                 NAMEOK = flags.contains(ItemFlags.IgnoreDisplayName) || fixedName1.equals(fixedName2);
 
-                LOREOK = flags.contains(ItemFlags.IgnoreLore) || (metaDropped.hasLore() && metaFiltered.hasLore() && metaDropped.getLore().toString().equals(metaFiltered.getLore().toString()));
+                if (!metaDropped.hasLore() && !metaFiltered.hasLore()) {
+                    LOREOK = true;
+                } else {
+                    LOREOK = flags.contains(ItemFlags.IgnoreLore) || (metaDropped.hasLore() && metaFiltered.hasLore() && metaDropped.getLore().toString().equals(metaFiltered.getLore().toString()));
+                }
 
             }
             if (flags.contains(ItemFlags.IgnoreNBT)) {
@@ -99,14 +105,12 @@ public class ItemUtils {
 //                System.out.println("NBT:\n");
 //                System.out.println("Fixed NBT 1 : " + first.toString());
 //                System.out.println("Fixed NBT 2 : " + second.toString());
-
                 if (first.toString().equals(second.toString())) {
                     NBTOK = true;
                 }
             }
 
-//            System.out.println("ENCH : " + ENCHOK + "\nNBT: " + NBTOK + "\nName: " + NAMEOK + "\nLore :" + LOREOK);
-
+            System.out.println("ENCH : " + ENCHOK + "\nNBT: " + NBTOK + "\nName: " + NAMEOK + "\nLore :" + LOREOK);
             if (ENCHOK && NBTOK && NAMEOK && LOREOK) {
                 result = true;
                 break;

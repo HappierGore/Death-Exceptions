@@ -1,7 +1,6 @@
 package events;
 
 import gui.GUIManager;
-import gui.items.ItemGUI;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;

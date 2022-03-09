@@ -7,7 +7,6 @@ C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exce
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\helper\DEXItem.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\helper\IOHelper.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\com\happiergore\deathexceptions\EventListener.java
-C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\gui\items\NBT\Lore\DisableLore.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\gui\items\ItemGUI.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\gui\items\NBT\EnableNBT.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\helper\ItemUtils.java
@@ -16,14 +15,15 @@ C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exce
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\gui\items\NBT\DisableNBT.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\helper\TextUtils.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\commands\argsAutocomplete.java
-C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\gui\items\NBT\Lore\EnableLore.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\gui\UpdateDBContent.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\gui\items\Enchantments\DisableEnchants.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\events\CloseGUI.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\gui\items\DisplayName\EnableDisplay.java
+C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\gui\items\Lore\DisableLore.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\mysqlite\MySQLite.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\commands\CreateItem.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\gui\GUIManager.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\events\OnRespawnPlayer.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\mysqlite\ItemDB.java
 C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\user\UserData.java
+C:\Users\HappierGore\Desktop\Educativo\Spigot\Plugins\DeathExceptions\Death-Exceptions\src\main\java\gui\items\Lore\EnableLore.java
