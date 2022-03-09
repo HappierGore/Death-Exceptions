@@ -1,9 +1,7 @@
 package gui;
 
-import de.tr7zw.nbtapi.NBTItem;
 import java.util.HashMap;
 import java.util.Map;
-import mysqlite.ItemDB;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -57,7 +55,6 @@ public class GUIManager {
     public void openItemsDB() {
         inv.clear();
         UserData.itemsDB.forEach((t) -> {
-            NBTItem nbtItem = new NBTItem(t);
             inv.addItem(t);
         });
         player.openInventory(inv);

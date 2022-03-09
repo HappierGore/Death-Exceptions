@@ -1,6 +1,7 @@
-package gui.items;
+package gui.items.NBT;
 
-import gui.ItemGUI;
+import gui.items.ItemGUI;
+import gui.items.ItemFlags;
 import helper.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,11 +21,12 @@ public class EnableNBT extends ItemGUI {
     public EnableNBT(ItemStack configItem, Inventory inventory, int slot) {
         super(inventory, slot);
 
+        final String displayName = TextUtils.parseColor("&6Ignore NBT Tags.");
         final List<String> lore = new ArrayList<>();
-        lore.add(TextUtils.parseColor("&bPara ignorar toda la información NBT"));
-        lore.add(TextUtils.parseColor("&bactiva esta opción"));
+        lore.add(TextUtils.parseColor("&To ignore NBT information"));
+        lore.add(TextUtils.parseColor("&benable this option."));
 
-        this.setItem(this.generateItem(null, Material.BOOK, "&bIgnorar NBT Tags", lore, null));
+        this.setItem(this.generateItem(null, Material.BOOK, displayName, lore, null));
 
         this.configItem = configItem;
     }
@@ -35,12 +37,7 @@ public class EnableNBT extends ItemGUI {
     @Override
     public void onClick() {
         ItemDB itemDB = new ItemDB();
-        List<String> flags = itemDB.getFlags(this.configItem);
-
-        if (!flags.contains("IgnoreNBT")) {
-            flags.add("IgnoreNBT");
-        }
+        itemDB.addFlag(this.configItem, ItemFlags.IgnoreNBT);
         this.changeItem(this.itemsToChange.get(0).getItem());
-        itemDB.updateFlags(this.configItem, flags);
     }
 }

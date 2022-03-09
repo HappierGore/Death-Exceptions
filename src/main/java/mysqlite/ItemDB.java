@@ -1,12 +1,12 @@
 package mysqlite;
 
+import gui.items.ItemFlags;
 import helper.DEXItem;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.bukkit.inventory.ItemStack;
 import user.UserData;
@@ -47,8 +47,8 @@ public class ItemDB extends MySQLite {
         }
     }
 
-    public void updateFlags(ItemStack item, List<String> flags) {
-        String flagString = String.join(";", flags).equals("") ? null : String.join(";", flags);
+    private void updateFlags(ItemStack item, List<ItemFlags> flags) {
+        String flagString = flags.toString().equals("[]") ? null : flags.toString().replace("[", "").replace("]", "");
         DEXItem fixedItem = new DEXItem(item);
         String sql = "UPDATE " + this.table + " SET flags = ? WHERE enchantments is ? AND material is ? AND displayname is ? AND lore is ? AND nbt is ?";
 
@@ -69,8 +69,8 @@ public class ItemDB extends MySQLite {
         }
     }
 
-    public List<String> getFlags(ItemStack item) {
-        List<String> flags = new ArrayList<>();
+    public List<ItemFlags> getFlags(ItemStack item) {
+        List<ItemFlags> flags = new ArrayList<>();
 
         DEXItem fixedItem = new DEXItem(item);
         String sql = "SELECT flags FROM " + this.table + " WHERE enchantments is ? AND material is ? AND displayname is ? AND lore is ? AND nbt is ?";
@@ -87,13 +87,33 @@ public class ItemDB extends MySQLite {
             ResultSet rs = db.executeQuery();
 
             String flagDB = rs.getString("flags");
+
             if (flagDB != null) {
-                flags.addAll(Arrays.asList(flagDB.split(";")));
+                for (String flag : flagDB.split(",")) {
+                    flags.add(ItemFlags.valueOf(flag.trim()));
+                }
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
         return flags;
+    }
+
+    public void addFlag(ItemStack item, ItemFlags flag) {
+        List<ItemFlags> flags = this.getFlags(item);
+
+        if (!flags.contains(flag)) {
+            flags.add(flag);
+            this.updateFlags(item, flags);
+        }
+    }
+
+    public void removeFlag(ItemStack item, ItemFlags flag) {
+        List<ItemFlags> flags = this.getFlags(item);
+        if (flags.contains(flag)) {
+            flags.remove(flag);
+            this.updateFlags(item, flags);
+        }
     }
 }

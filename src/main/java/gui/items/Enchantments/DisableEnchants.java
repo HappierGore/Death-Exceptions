@@ -1,6 +1,7 @@
-package gui.items;
+package gui.items.Enchantments;
 
-import gui.ItemGUI;
+import gui.items.ItemGUI;
+import gui.items.ItemFlags;
 import helper.TextUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,11 +18,11 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author HappierGore
  */
-public class DisableNBT extends ItemGUI {
+public class DisableEnchants extends ItemGUI {
 
     private final ItemStack configItem;
 
-    public DisableNBT(ItemStack configItem, Inventory inventory, int slot) {
+    public DisableEnchants(ItemStack configItem, Inventory inventory, int slot) {
         super(inventory, slot);
 
         final Map<Enchantment, Integer> enchants = new HashMap<>();
@@ -30,11 +31,12 @@ public class DisableNBT extends ItemGUI {
         final List<ItemFlag> flags = new ArrayList<>();
         flags.add(ItemFlag.HIDE_ENCHANTS);
 
+        final String displayName = TextUtils.parseColor("&6Compare enchantments");
         final List<String> lore = new ArrayList<>();
-        lore.add(TextUtils.parseColor("&bPara comparar toda la información NBT"));
-        lore.add(TextUtils.parseColor("&bdesactiva esta opción"));
+        lore.add(TextUtils.parseColor("&bTo compare enchantments"));
+        lore.add(TextUtils.parseColor("&benable this option."));
 
-        this.setItem(this.generateItem(enchants, Material.BOOK, "&bComparar NBT Tags", lore, flags));
+        this.setItem(this.generateItem(enchants, Material.ENCHANTING_TABLE, displayName, lore, flags));
 
         this.configItem = configItem;
     }
@@ -42,12 +44,8 @@ public class DisableNBT extends ItemGUI {
     @Override
     public void onClick() {
         ItemDB itemDB = new ItemDB();
-        List<String> flags = itemDB.getFlags(this.configItem);
-        if (flags.contains("IgnoreNBT")) {
-            flags.remove("IgnoreNBT");
-        }
+        itemDB.removeFlag(this.configItem, ItemFlags.IgnoreEnchantments);
         this.changeItem(this.itemsToChange.get(0).getItem());
-        itemDB.updateFlags(this.configItem, flags);
     }
 
 }
