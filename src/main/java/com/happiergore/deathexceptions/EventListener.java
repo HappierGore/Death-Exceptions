@@ -7,6 +7,7 @@ package com.happiergore.deathexceptions;
 import commands.DeathExceptions;
 import commands.argsAutocomplete;
 import events.CloseGUI;
+import events.OnClickGUI;
 import events.OnDeathPlayer;
 import events.OnRespawnPlayer;
 import static helper.IOHelper.ExportResource;
@@ -20,6 +21,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -35,18 +37,17 @@ public class EventListener extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
 
-        MySQLite.path = "jdbc:sqlite:" + dbPath.replace('\\', '/') + "/SavedItems.db";
-
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
+            //Generar base de datos en caso de que no exista
+            generateDB();
         }
+
+        MySQLite.path = "jdbc:sqlite:" + dbPath.replace('\\', '/') + "/SavedItems.db";
 
         new ItemDB().loadAllData();
 
         configYML = getConfig();
-
-        //Generar base de datos en caso de que no exista
-        generateDB();
 
         //Crear config.yml en caso de que no exista
         saveDefaultConfig();
@@ -89,6 +90,11 @@ public class EventListener extends JavaPlugin implements Listener {
     @EventHandler
     public void InventoryCloseEvent(InventoryCloseEvent e) {
         CloseGUI.onCloseInv(e);
+    }
+
+    @EventHandler
+    public void InventoryClickEvent(InventoryClickEvent e) {
+        OnClickGUI.onClickGUI(e);
     }
 
     //********************

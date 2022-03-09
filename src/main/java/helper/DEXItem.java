@@ -139,7 +139,6 @@ public final class DEXItem {
 
         nbtItem.getKeys().forEach(key -> {
             if (!NBTExceptions.contains(key)) {
-                //System.out.println("KEY: " + key);
                 nbtNormal.append(key).append(":");
                 switch (nbtItem.getType(key)) {
                     case NBTTagString -> {

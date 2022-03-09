@@ -1,5 +1,6 @@
 package commands;
 
+import gui.GUIManager;
 import helper.TextUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -48,7 +49,7 @@ public class DeathExceptions implements CommandExecutor {
                     sender.sendMessage(noPermissionMsg);
                     break;
                 }
-                GUIManager.getObj(player.getUniqueId().toString()).openInventory(player);
+                GUIManager.getObj(player).openItemsDB();
             }
             default -> {
                 player.sendMessage(TextUtils.parseColor("&cEse comando no existe."));
