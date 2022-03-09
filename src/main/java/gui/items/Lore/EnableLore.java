@@ -1,4 +1,4 @@
-package gui.items.NBT.Lore;
+package gui.items.Lore;
 
 import gui.items.ItemFlags;
 import gui.items.ItemGUI;

@@ -23,7 +23,7 @@ public class EnableNBT extends ItemGUI {
 
         final String displayName = TextUtils.parseColor("&6Ignore NBT Tags.");
         final List<String> lore = new ArrayList<>();
-        lore.add(TextUtils.parseColor("&To ignore NBT information"));
+        lore.add(TextUtils.parseColor("&bTo ignore NBT information"));
         lore.add(TextUtils.parseColor("&benable this option."));
 
         this.setItem(this.generateItem(null, Material.BOOK, displayName, lore, null));
