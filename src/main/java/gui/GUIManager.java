@@ -47,9 +47,9 @@ public class GUIManager {
         this.player = player;
         int rows = (int) (Math.ceil((UserData.itemsDB.size() / 9.0f) + 0.5));
 
-        inv = Bukkit.createInventory(null, rows * 9, "Items protegidos");
+        inv = Bukkit.createInventory(null, rows * 9, "Protected items");
 
-        configInv = Bukkit.createInventory(null, 27, "Configurar item");
+        configInv = Bukkit.createInventory(null, 27, "Configure item");
     }
 
     public void openItemsDB() {

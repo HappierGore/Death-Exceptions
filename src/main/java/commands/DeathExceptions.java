@@ -30,29 +30,33 @@ public class DeathExceptions implements CommandExecutor {
         String noPermissionMsg = TextUtils.parseColor("&cNo tienes los permisos necesarios para ejecutar este comando.");
 
         switch (args[0].toLowerCase()) {
-            case "createitem" -> {
+            case "createitem": {
                 if (!sender.hasPermission("deathExceptions.createItem")) {
                     sender.sendMessage(noPermissionMsg);
                     break;
                 }
                 CreateItem.createItem(player);
+                break;
             }
-            case "additem" -> {
+            case "additem": {
                 if (!sender.hasPermission("deathExceptions.addItem")) {
                     sender.sendMessage(noPermissionMsg);
                     break;
                 }
                 AddItem.addItem(player);
+                break;
             }
-            case "gui" -> {
+            case "gui": {
                 if (!sender.hasPermission("deathExceptions.gui")) {
                     sender.sendMessage(noPermissionMsg);
                     break;
                 }
                 GUIManager.getObj(player).openItemsDB();
+                break;
             }
-            default -> {
+            default: {
                 player.sendMessage(TextUtils.parseColor("&cEse comando no existe."));
+                break;
             }
         }
 
