@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.happiergore.deathexceptions;
 
 import commands.DeathExceptions;
@@ -17,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import mysqlite.ItemDB;
 import mysqlite.MySQLite;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,10 +29,16 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class EventListener extends JavaPlugin implements Listener {
 
+    private String sversion;
+
     public static FileConfiguration configYML;
 
     @Override
     public void onEnable() {
+
+        if (!setupManager()) {
+            return;
+        }
 
         if (!getDataFolder().exists()) {
             getDataFolder().mkdir();
@@ -62,10 +65,10 @@ public class EventListener extends JavaPlugin implements Listener {
 
         StringBuilder enabledMsg = new StringBuilder();
         enabledMsg.append("&9********************\n\n");
-        enabledMsg.append("&bDeath Exceptions cargado correctamente\n");
-        enabledMsg.append("&b¡Gracias por tu preferencia!\n");
+        enabledMsg.append("&bDeath Exceptions has been loaded\n");
+        enabledMsg.append("&b¡Thanks for your preference!\n");
         enabledMsg.append("&6Autor: HappierGore");
-        enabledMsg.append("&9Discord: &nHappierGore#\n\n");
+        enabledMsg.append("&9Discord: &nHappierGore#1197\n\n");
         enabledMsg.append("&9********************\n");
 
         System.out.println(TextUtils.parseColor(enabledMsg.toString()));
@@ -131,5 +134,55 @@ public class EventListener extends JavaPlugin implements Listener {
     private void registerCommands() {
         this.getCommand("deathexceptions").setTabCompleter(new argsAutocomplete());
         this.getCommand("deathexceptions").setExecutor(new DeathExceptions());
+    }
+
+    private boolean setupManager() {
+        sversion = "N/A";
+        try {
+            sversion = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return false;
+        }
+
+        if (sversion.contains("v1_8")) {
+            SuccessMessage("v1.8");
+            return true;
+        } else if (sversion.contains("v1_9")) {
+            SuccessMessage("v1.9");
+            return true;
+        } else if (sversion.contains("v1_10")) {
+            SuccessMessage("v1.10");
+            return true;
+        } else if (sversion.contains("v1_11")) {
+            SuccessMessage("v1.11");
+            return true;
+        } else if (sversion.contains("v1_12")) {
+            SuccessMessage("v1.12");
+            return true;
+        } else if (sversion.contains("v1_13")) {
+            SuccessMessage("v1.13");
+            return true;
+        } else if (sversion.contains("v1_14")) {
+            SuccessMessage("v1.14");
+            return true;
+        } else if (sversion.contains("v1_15")) {
+            SuccessMessage("v1.15");
+            return true;
+        } else if (sversion.contains("v1_16")) {
+            SuccessMessage("v1.16");
+            return true;
+        } else if (sversion.contains("v1_17")) {
+            SuccessMessage("v1.17");
+            return true;
+        } else if (sversion.contains("v1_18")) {
+            SuccessMessage("v1.18");
+            return true;
+        }
+        return false;
+    }
+
+    private void SuccessMessage(String version) {
+        System.out.println("\n§3------------------ §bDeathExceptions - Logger §3------------------");
+        System.out.println("\nClient version " + sversion + " \nPlugin version selected: " + version);
     }
 }

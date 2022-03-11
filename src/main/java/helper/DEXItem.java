@@ -83,20 +83,24 @@ public final class DEXItem {
     //***************************
     private NBTItem generateNBT(ItemStack item) {
         NBTItem nbtItem = new NBTItem(item);
+
         for (String entry : this.NBT.split(";")) {
             String dataType = entry.split(":")[1];
             String key = entry.split(":")[0];
             String info = entry.split(":")[2];
 
             switch (dataType) {
-                case "String" -> {
+                case "String": {
                     nbtItem.setString(key, info);
+                    break;
                 }
-                case "Integer" -> {
+                case "Integer": {
                     nbtItem.setInteger(key, Integer.parseInt(info));
+                    break;
                 }
-                case "Float" -> {
+                case "Float": {
                     nbtItem.setFloat(key, Float.parseFloat(info));
+                    break;
                 }
             }
 
@@ -141,14 +145,17 @@ public final class DEXItem {
             if (!NBTExceptions.contains(key)) {
                 nbtNormal.append(key).append(":");
                 switch (nbtItem.getType(key)) {
-                    case NBTTagString -> {
+                    case NBTTagString: {
                         nbtNormal.append("String:").append(nbtItem.getString(key));
+                        break;
                     }
-                    case NBTTagInt -> {
+                    case NBTTagInt: {
                         nbtNormal.append("Integer:").append(nbtItem.getInteger(key));
+                        break;
                     }
-                    case NBTTagFloat -> {
+                    case NBTTagFloat: {
                         nbtNormal.append("Float:").append(nbtItem.getFloat(key));
+                        break;
                     }
                 }
                 nbtNormal.append(";");

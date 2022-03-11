@@ -23,7 +23,6 @@ public class IOHelper {
         InputStream stream = null;
         OutputStream resStreamOut = null;
         String jarFolder = outPath.replace('\\', '/');
-        System.out.println("JarFolder: " + jarFolder);
         try {
             stream = EventListener.class.getResourceAsStream(resourceName);//note that each / is a directory down in the "jar tree" been the jar the root of the tree
             if (stream == null) {

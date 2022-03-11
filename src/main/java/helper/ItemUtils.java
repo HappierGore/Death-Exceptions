@@ -110,7 +110,7 @@ public class ItemUtils {
                 }
             }
 
-            System.out.println("ENCH : " + ENCHOK + "\nNBT: " + NBTOK + "\nName: " + NAMEOK + "\nLore :" + LOREOK);
+            //System.out.println("ENCH : " + ENCHOK + "\nNBT: " + NBTOK + "\nName: " + NAMEOK + "\nLore :" + LOREOK);
             if (ENCHOK && NBTOK && NAMEOK && LOREOK) {
                 result = true;
                 break;

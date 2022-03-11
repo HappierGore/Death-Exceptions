@@ -33,12 +33,14 @@ public class UpdateDBContent {
         noValidMaterial.add(Material.WRITTEN_BOOK);
         noValidMaterial.add(Material.MAP);
         noValidMaterial.addAll(Tag.SHULKER_BOXES.getValues());
+        noValidMaterial.add(Material.FIREWORK_STAR);
+        noValidMaterial.add(Material.FIREWORK_ROCKET);
 
         //When item is added
         e.getInventory().forEach(item -> {
             if (item != null) {
                 if (noValidMaterial.contains(item.getType())) {
-                    e.getPlayer().sendMessage(TextUtils.parseColor("&cDeath Exceptions lite no soporta los items de tipo " + item.getType().toString()));
+                    e.getPlayer().sendMessage(TextUtils.parseColor("&cDeath Exceptions lite doesn't support items of type " + item.getType().toString()));
                     e.getPlayer().getInventory().addItem(item);
                     return;
                 }
