@@ -3,6 +3,7 @@ package gui.items.Lore;
 import gui.items.ItemFlags;
 import gui.items.ItemGUI;
 import helper.TextUtils;
+import helper.VersionManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,9 @@ public class DisableLore extends ItemGUI {
         lore.add(TextUtils.parseColor("&bTo compare lore"));
         lore.add(TextUtils.parseColor("&bunable this option."));
 
-        this.setItem(this.generateItem(enchants, Material.OAK_SIGN, displayName, lore, flags));
+        Material material = Material.getMaterial(VersionManager.parseMaterial("OAK_SIGN"));
+
+        this.setItem(this.generateItem(enchants, material, displayName, lore, flags));
 
         this.configItem = configItem;
     }

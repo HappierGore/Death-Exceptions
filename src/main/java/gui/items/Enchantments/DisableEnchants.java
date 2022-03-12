@@ -3,6 +3,7 @@ package gui.items.Enchantments;
 import gui.items.ItemGUI;
 import gui.items.ItemFlags;
 import helper.TextUtils;
+import helper.VersionManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,9 @@ public class DisableEnchants extends ItemGUI {
         lore.add(TextUtils.parseColor("&bTo compare enchantments"));
         lore.add(TextUtils.parseColor("&benable this option."));
 
-        this.setItem(this.generateItem(enchants, Material.ENCHANTING_TABLE, displayName, lore, flags));
+        Material material = Material.getMaterial(VersionManager.parseMaterial("ENCHANTING_TABLE"));
+
+        this.setItem(this.generateItem(enchants, material, displayName, lore, flags));
 
         this.configItem = configItem;
     }

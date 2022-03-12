@@ -37,7 +37,7 @@ public class ItemUtils {
 
             List<ItemFlags> flags = itemDB.getFlags(UserData.itemsDB.get(i));
 
-            //System.out.println("Flags: " + flags.toString() + "\n");
+//            System.out.println("Flags: " + flags.toString() + "\n");
             ItemMeta metaFiltered = itemInDB.getItemMeta();
             ItemMeta metaDropped = itemDropped.getItemMeta();
 
@@ -71,8 +71,27 @@ public class ItemUtils {
                     }
                 }
 
-                String fixedName1 = metaDropped.hasEnchants() ? metaDropped.getDisplayName().replace(TextUtils.parseColor("&b"), "") : metaDropped.getDisplayName();
-                String fixedName2 = metaFiltered.hasEnchants() ? metaFiltered.getDisplayName().replace(TextUtils.parseColor("&b"), "") : metaFiltered.getDisplayName();
+                String fixedName1;
+                String fixedName2;
+
+                if (VersionManager.version <= 10) {
+                    if (metaDropped.getDisplayName() != null) {
+                        fixedName1 = metaDropped.hasEnchants() ? metaDropped.getDisplayName().replace(TextUtils.parseColor("&b"), "") : metaDropped.getDisplayName();
+                    } else {
+                        fixedName1 = null;
+                    }
+                    if (metaFiltered.getDisplayName() != null) {
+                        fixedName2 = metaFiltered.hasEnchants() ? metaFiltered.getDisplayName().replace(TextUtils.parseColor("&b"), "") : metaFiltered.getDisplayName();
+                    } else {
+                        fixedName2 = null;
+                    }
+                } else {
+                    fixedName1 = metaDropped.hasEnchants() ? metaDropped.getDisplayName().replace(TextUtils.parseColor("&b"), "") : metaDropped.getDisplayName();
+                    fixedName2 = metaFiltered.hasEnchants() ? metaFiltered.getDisplayName().replace(TextUtils.parseColor("&b"), "") : metaFiltered.getDisplayName();
+                }
+
+                fixedName1 = fixedName1 == null ? "" : fixedName1;
+                fixedName2 = fixedName2 == null ? "" : fixedName2;
 //                System.out.println("DISPLAYNAME:\n");
 //                System.out.println("FixedName 1 : " + fixedName1);
 //                System.out.println("FixedName 2 : " + fixedName2);
@@ -95,6 +114,7 @@ public class ItemUtils {
                 List<String> exceptions = new ArrayList<>();
                 exceptions.add("Enchantments");
                 exceptions.add("UUID");
+                exceptions.add("ench");
                 exceptions.add("display");
 
                 exceptions.forEach(exc -> {
@@ -110,7 +130,7 @@ public class ItemUtils {
                 }
             }
 
-            //System.out.println("ENCH : " + ENCHOK + "\nNBT: " + NBTOK + "\nName: " + NAMEOK + "\nLore :" + LOREOK);
+//            System.out.println("ENCH : " + ENCHOK + "\nNBT: " + NBTOK + "\nName: " + NAMEOK + "\nLore :" + LOREOK);
             if (ENCHOK && NBTOK && NAMEOK && LOREOK) {
                 result = true;
                 break;
