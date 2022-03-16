@@ -31,8 +31,9 @@ public abstract class ItemGUI {
         inventory.setItem(slot, newItem);
     }
 
-    public void returnOriginalItem() {
-        inventory.setItem(slot, item);
+    public void pushLore(List<String> lore) {
+        this.item.getItemMeta().getLore().addAll(lore);
+
     }
 
     public final ItemStack generateItem(Map<Enchantment, Integer> enchantments, Material material, String displayName, List<String> lore, List<ItemFlag> flags) {
@@ -61,6 +62,10 @@ public abstract class ItemGUI {
         ItemStack newItem = new ItemStack(material);
         newItem.setItemMeta(itemMeta);
         return newItem;
+    }
+
+    public void loadItem() {
+        inventory.setItem(this.slot, this.item);
     }
 
     public abstract void onClick();
