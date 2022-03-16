@@ -61,7 +61,7 @@ public class GUIManager {
     }
 
     public void openConfigItem(final ItemStack item) {
-        configItems = new ConfigItems(item, configInv);
+        configItems = new ConfigItems(item, configInv, player);
         configuring = true;
         player.openInventory(configInv);
     }

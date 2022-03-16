@@ -3,6 +3,7 @@ package gui.items.Lore;
 import gui.items.ItemFlags;
 import gui.items.ItemGUI;
 import helper.TextUtils;
+import helper.VersionManager;
 import java.util.ArrayList;
 import java.util.List;
 import mysqlite.ItemDB;
@@ -25,7 +26,8 @@ public class EnableLore extends ItemGUI {
         lore.add(TextUtils.parseColor("&bTo ignore lore"));
         lore.add(TextUtils.parseColor("&benable this option."));
 
-        this.setItem(this.generateItem(null, Material.OAK_SIGN, displayName, lore, null));
+        Material material = Material.getMaterial(VersionManager.parseMaterial("OAK_SIGN"));
+        this.setItem(this.generateItem(null, material, displayName, lore, null));
 
         this.configItem = configItem;
     }

@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -30,14 +29,19 @@ public final class DEXItem {
         StringBuilder ench = new StringBuilder();
 
         item.getEnchantments().entrySet().forEach((t) -> {
-            ench.append(t.getKey().getKey().getKey()).append(":").append(t.getValue()).append(";");
+            //Entries on no old version Enchantment[minecraft:aqua_affinity, WATER_WORKER]
+            //Entries on old version Enchantment[16, WATER_WORKER]
+            String enc = t.getKey().toString().replace("Enchantment", "").split(",")[1].trim().replace("]", "");
+            int level = t.getValue();
+
+            ench.append(enc).append(":").append(Integer.toString(level)).append(";");
         });
 
         this.ENCHANTMENTS = ench.toString().trim().equals("") ? null : ench.toString();
 
         this.MATERIAL = item.getType().toString();
-        this.DISPLAYNAME = !item.getItemMeta().getDisplayName().equals("") ? item.getItemMeta().getDisplayName() : null;
-        this.LORE = item.getItemMeta().getLore() != null ? String.join(";", item.getItemMeta().getLore()) : null;
+        this.DISPLAYNAME = item.getItemMeta() != null ? item.getItemMeta().getDisplayName() : null;
+        this.LORE = item.getItemMeta() != null && item.getItemMeta().getLore() != null ? String.join(";", item.getItemMeta().getLore()) : null;
 
         this.NBT = filterNBT(item);
 
@@ -83,7 +87,6 @@ public final class DEXItem {
     //***************************
     private NBTItem generateNBT(ItemStack item) {
         NBTItem nbtItem = new NBTItem(item);
-
         for (String entry : this.NBT.split(";")) {
             String dataType = entry.split(":")[1];
             String key = entry.split(":")[0];
@@ -125,7 +128,8 @@ public final class DEXItem {
 
     private void generateEnchantments(ItemMeta itemMeta, ItemStack item) {
         for (String input : this.ENCHANTMENTS.split(";")) {
-            Enchantment enchant = Enchantment.getByKey(NamespacedKey.fromString(input.split(":")[0]));
+            Enchantment enchant = Enchantment.getByName(input.split(":")[0]);
+            //Enchantment enchant = Enchantment.getByKey(NamespacedKey.fromString(input.split(":")[0]));
             int level = Integer.parseInt(input.split(":")[1]);
             itemMeta.addEnchant(enchant, level, true);
         }
@@ -138,6 +142,7 @@ public final class DEXItem {
         StringBuilder nbtNormal = new StringBuilder();
 
         NBTExceptions.add("Enchantments");
+        NBTExceptions.add("ench");
         NBTExceptions.add("display");
         NBTExceptions.add("UUID");
 

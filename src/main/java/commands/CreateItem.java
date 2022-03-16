@@ -14,12 +14,12 @@ public class CreateItem {
     public static void createItem(Player player) {
         
         if (!player.hasPermission("deathExceptions.createItem")) {
-            player.sendMessage(TextUtils.parseColor("&cNo tienes los permisos necesarios para ejecutar este comando"));
+            player.sendMessage(TextUtils.parseColor("&cYou don't have permissions to execute this command"));
             return;
         }
         
         if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
-            player.sendMessage(TextUtils.parseColor("&cNecesitas tener un item en tu mano para ejecutar este comando."));
+            player.sendMessage(TextUtils.parseColor("&cYou need an item to execute this command"));
             return;
         }
         
@@ -31,7 +31,7 @@ public class CreateItem {
         
         player.getInventory().setItem(slot, item.getItem());
         
-        player.sendMessage(TextUtils.parseColor("&aTu item ahora no se dropeará al morir."));
+        player.sendMessage(TextUtils.parseColor("&aYour item won't be dropped anymore"));
         
     }
     

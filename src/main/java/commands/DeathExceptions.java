@@ -16,18 +16,18 @@ public class DeathExceptions implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
         if (!(sender instanceof Player)) {
-            System.out.println("Este comando sólo puede ser ejecutado por jugadores");
+            System.out.println("This command is only for players");
             return false;
         }
 
         Player player = (Player) sender;
 
         if (args.length == 0) {
-            player.sendMessage(TextUtils.parseColor("&cComando incompleto. Necesitas especificar un argumento. Ex: &bcreate, &aadd"));
+            player.sendMessage(TextUtils.parseColor("&cImcomplent command, need to specify arguments. Ex: &bcreate, &aadd"));
             return false;
         }
 
-        String noPermissionMsg = TextUtils.parseColor("&cNo tienes los permisos necesarios para ejecutar este comando.");
+        String noPermissionMsg = TextUtils.parseColor("&cYou don't have permissions to execute this command");
 
         switch (args[0].toLowerCase()) {
             case "createitem": {
@@ -55,7 +55,7 @@ public class DeathExceptions implements CommandExecutor {
                 break;
             }
             default: {
-                player.sendMessage(TextUtils.parseColor("&cEse comando no existe."));
+                player.sendMessage(TextUtils.parseColor("&cThat command doesn't exist."));
                 break;
             }
         }

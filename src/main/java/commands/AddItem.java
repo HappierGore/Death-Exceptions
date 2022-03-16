@@ -15,18 +15,17 @@ public class AddItem {
     public static void addItem(Player player) {
 
         if (!player.hasPermission("deathExceptions.addItem")) {
-            player.sendMessage(TextUtils.parseColor("&cNo tienes los permisos necesarios para ejecutar este comando"));
+            player.sendMessage(TextUtils.parseColor("&cYou don't have permissions to execute this command"));
             return;
         }
 
         if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
-            player.sendMessage(TextUtils.parseColor("&cNecesitas tener un item en tu mano para ejecutar este comando."));
+            player.sendMessage(TextUtils.parseColor("&cYou need an item to execute this command"));
             return;
         }
 
-        new ItemDB().addItem(player.getInventory().getItemInMainHand());
-
-        player.sendMessage(TextUtils.parseColor("&aSe ha añadido el objeto de tu mano a la base de datos para prevenir su dropeo!"));
-
+        if (new ItemDB().addItem(player.getInventory().getItemInMainHand(), player)) {
+            player.sendMessage(TextUtils.parseColor("&aThis item has been added into exceptions!"));
+        }
     }
 }

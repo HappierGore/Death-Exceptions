@@ -1,6 +1,7 @@
 package events;
 
 import gui.GUIManager;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
@@ -27,7 +28,7 @@ public class OnClickGUI {
         if (e.getClickedInventory().equals(guiManager.inv)) {
             if (e.getClick().isRightClick()) {
 
-                if (e.getCurrentItem() == null) {
+                if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) {
                     return;
                 }
 

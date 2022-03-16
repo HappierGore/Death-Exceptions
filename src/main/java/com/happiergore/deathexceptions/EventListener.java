@@ -8,6 +8,7 @@ import events.OnDeathPlayer;
 import events.OnRespawnPlayer;
 import static helper.IOHelper.ExportResource;
 import helper.TextUtils;
+import helper.VersionManager;
 import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,6 +36,16 @@ public class EventListener extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+
+        try {
+            try {
+                Class.forName("org.sqlite.JDBC").newInstance();
+            } catch (InstantiationException | IllegalAccessException ex) {
+                Logger.getLogger(EventListener.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EventListener.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         if (!setupManager()) {
             return;
@@ -144,40 +155,67 @@ public class EventListener extends JavaPlugin implements Listener {
             return false;
         }
 
-        if (sversion.contains("v1_8")) {
+        if (sversion.contains("v1_5")) {
+            SuccessMessage("v1.5");
+            VersionManager.version = 5;
+            return true;
+        } else if (sversion.contains("v1_6")) {
+            SuccessMessage("v1.6");
+            VersionManager.version = 6;
+            return true;
+        } else if (sversion.contains("v1_7")) {
+            SuccessMessage("v1.7");
+            VersionManager.version = 7;
+            return true;
+        } else if (sversion.contains("v1_8")) {
             SuccessMessage("v1.8");
+            VersionManager.version = 8;
             return true;
         } else if (sversion.contains("v1_9")) {
             SuccessMessage("v1.9");
+            VersionManager.version = 9;
             return true;
         } else if (sversion.contains("v1_10")) {
             SuccessMessage("v1.10");
+            VersionManager.version = 10;
             return true;
         } else if (sversion.contains("v1_11")) {
             SuccessMessage("v1.11");
+            VersionManager.version = 11;
             return true;
         } else if (sversion.contains("v1_12")) {
             SuccessMessage("v1.12");
+            VersionManager.version = 12;
             return true;
         } else if (sversion.contains("v1_13")) {
             SuccessMessage("v1.13");
+            VersionManager.version = 13;
             return true;
         } else if (sversion.contains("v1_14")) {
             SuccessMessage("v1.14");
+            VersionManager.version = 14;
             return true;
         } else if (sversion.contains("v1_15")) {
             SuccessMessage("v1.15");
+            VersionManager.version = 15;
             return true;
         } else if (sversion.contains("v1_16")) {
             SuccessMessage("v1.16");
+            VersionManager.version = 16;
             return true;
         } else if (sversion.contains("v1_17")) {
             SuccessMessage("v1.17");
+            VersionManager.version = 17;
             return true;
         } else if (sversion.contains("v1_18")) {
             SuccessMessage("v1.18");
+            VersionManager.version = 18;
             return true;
         }
+
+        System.out.println("The version " + sversion + " is not suported.");
+        this.getServer().getPluginManager().disablePlugin(this);
+
         return false;
     }
 

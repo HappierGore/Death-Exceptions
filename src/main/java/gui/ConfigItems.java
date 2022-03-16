@@ -1,5 +1,6 @@
 package gui;
 
+import gui.items.Back;
 import gui.items.DisplayName.DisableDisplay;
 import gui.items.DisplayName.EnableDisplay;
 import gui.items.ItemGUI;
@@ -13,6 +14,7 @@ import gui.items.Lore.EnableLore;
 import java.util.ArrayList;
 import java.util.List;
 import mysqlite.ItemDB;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -36,19 +38,23 @@ public final class ConfigItems {
     //Lore option
     private EnableLore enableLore;
     private DisableLore disableLore;
-    
+
     //Displayname option
     private EnableDisplay enableDisplay;
     private DisableDisplay disableDisplay;
 
+    //Back option
+    private Back back;
+
     private final ItemStack configureItem;
 
-    public ConfigItems(ItemStack configureItem, Inventory inventory) {
+    public ConfigItems(ItemStack configureItem, Inventory inventory, Player player) {
         this.configureItem = configureItem;
         loadNBTItems(configureItem, inventory);
         loadEnchantItems(configureItem, inventory);
         loadLoreItems(configureItem, inventory);
         loadDisplayItems(configureItem, inventory);
+        loadBack(player, inventory);
     }
 
     public void evaluate(ItemStack item) {
@@ -85,12 +91,19 @@ public final class ConfigItems {
         this.disableLore = new DisableLore(configureItem, inventory, slot);
         switchItems(this.enableLore, this.disableLore, ItemFlags.IgnoreLore);
     }
-    
-    private void loadDisplayItems(ItemStack configureItem, Inventory inventory){
+
+    private void loadDisplayItems(ItemStack configureItem, Inventory inventory) {
         int slot = 16;
         this.enableDisplay = new EnableDisplay(configureItem, inventory, slot);
         this.disableDisplay = new DisableDisplay(configureItem, inventory, slot);
         switchItems(this.enableDisplay, this.disableDisplay, ItemFlags.IgnoreDisplayName);
+    }
+
+    private void loadBack(Player player, Inventory inventory) {
+        int slot = 22;
+        this.back = new Back(inventory, slot, player);
+        this.allItems.add(back);
+        back.loadItem();
     }
 
     //***********************
@@ -102,9 +115,11 @@ public final class ConfigItems {
         disabledItem.itemsToChange.add(enabledItem);
 
         if (new ItemDB().getFlags(this.configureItem).contains(flag)) {
-            enabledItem.getInventory().setItem(disabledItem.getSlot(), disabledItem.getItem());
+            disabledItem.loadItem();
+//            enabledItem.getInventory().setItem(disabledItem.getSlot(), disabledItem.getItem());
         } else {
-            enabledItem.getInventory().setItem(enabledItem.getSlot(), enabledItem.getItem());
+            enabledItem.loadItem();
+            //          enabledItem.getInventory().setItem(enabledItem.getSlot(), enabledItem.getItem());
         }
         this.allItems.add(enabledItem);
         this.allItems.add(disabledItem);

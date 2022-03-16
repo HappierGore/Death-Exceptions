@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.bukkit.inventory.ItemStack;
 import user.UserData;
 
@@ -27,7 +29,7 @@ public class ItemDB extends MySQLite {
 
         String sql = "SELECT * FROM " + this.table;
 
-        try ( Connection conn = this.connect();  PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try (Connection conn = this.connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
             // set the corresponding param
             ResultSet rs = pstmt.executeQuery();
@@ -52,7 +54,7 @@ public class ItemDB extends MySQLite {
         DEXItem fixedItem = new DEXItem(item);
         String sql = "UPDATE " + this.table + " SET flags = ? WHERE enchantments is ? AND material is ? AND displayname is ? AND lore is ? AND nbt is ?";
 
-        try ( Connection conn = connect();  PreparedStatement db = conn.prepareStatement(sql)) {
+        try (Connection conn = connect(); PreparedStatement db = conn.prepareStatement(sql)) {
 
             // set the corresponding param
             db.setString(1, flagString);
@@ -75,7 +77,7 @@ public class ItemDB extends MySQLite {
         DEXItem fixedItem = new DEXItem(item);
         String sql = "SELECT flags FROM " + this.table + " WHERE enchantments is ? AND material is ? AND displayname is ? AND lore is ? AND nbt is ?";
 
-        try ( Connection conn = this.connect();  PreparedStatement db = conn.prepareStatement(sql)) {
+        try (Connection conn = this.connect(); PreparedStatement db = conn.prepareStatement(sql)) {
 
             db.setString(1, fixedItem.ENCHANTMENTS);
             db.setString(2, fixedItem.MATERIAL);

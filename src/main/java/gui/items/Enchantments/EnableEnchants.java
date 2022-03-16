@@ -3,6 +3,7 @@ package gui.items.Enchantments;
 import gui.items.ItemGUI;
 import gui.items.ItemFlags;
 import helper.TextUtils;
+import helper.VersionManager;
 import java.util.ArrayList;
 import java.util.List;
 import mysqlite.ItemDB;
@@ -24,8 +25,9 @@ public class EnableEnchants extends ItemGUI {
         final List<String> lore = new ArrayList<>();
         lore.add(TextUtils.parseColor("&bTo ignore enchantments"));
         lore.add(TextUtils.parseColor("&benable this option."));
+        Material material = Material.getMaterial(VersionManager.parseMaterial("ENCHANTING_TABLE"));
 
-        this.setItem(this.generateItem(null, Material.ENCHANTING_TABLE, displayName, lore, null));
+        this.setItem(this.generateItem(null, material, displayName, lore, null));
 
         this.configItem = configItem;
     }
