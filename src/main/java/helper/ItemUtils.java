@@ -74,7 +74,7 @@ public class ItemUtils {
                 String fixedName1;
                 String fixedName2;
 
-                if (VersionManager.version <= 10) {
+                if (VersionManager.version <= 12) {
                     if (metaDropped.getDisplayName() != null) {
                         fixedName1 = metaDropped.hasEnchants() ? metaDropped.getDisplayName().replace(TextUtils.parseColor("&b"), "") : metaDropped.getDisplayName();
                     } else {
