@@ -46,8 +46,7 @@ public class DisableEnchants extends ItemGUI {
 
     @Override
     public void onClick() {
-        ItemDB itemDB = new ItemDB();
-        itemDB.removeFlag(this.configItem, ItemFlags.IgnoreEnchantments);
+        ItemDB.removeFlag(this.configItem, ItemFlags.IgnoreEnchantments);
         this.changeItem(this.itemsToChange.get(0).getItem());
     }
 

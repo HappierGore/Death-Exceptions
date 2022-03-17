@@ -43,8 +43,7 @@ public class DisableNBT extends ItemGUI {
 
     @Override
     public void onClick() {
-        ItemDB itemDB = new ItemDB();
-        itemDB.removeFlag(this.configItem, ItemFlags.IgnoreNBT);
+        ItemDB.removeFlag(this.configItem, ItemFlags.IgnoreNBT);
         this.changeItem(this.itemsToChange.get(0).getItem());
     }
 

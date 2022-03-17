@@ -46,8 +46,7 @@ public class DisableLore extends ItemGUI {
 
     @Override
     public void onClick() {
-        ItemDB itemDB = new ItemDB();
-        itemDB.removeFlag(this.configItem, ItemFlags.IgnoreLore);
+        ItemDB.removeFlag(this.configItem, ItemFlags.IgnoreLore);
         this.changeItem(this.itemsToChange.get(0).getItem());
     }
 

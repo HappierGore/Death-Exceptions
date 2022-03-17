@@ -4,7 +4,6 @@ import helper.TextUtils;
 import mysqlite.ItemDB;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import user.UserData;
 
 /**
  *
@@ -24,8 +23,11 @@ public class AddItem {
             return;
         }
 
-        if (new ItemDB().addItem(player.getInventory().getItemInMainHand(), player)) {
+        if (ItemDB.addItem(player.getInventory().getItemInMainHand())) {
             player.sendMessage(TextUtils.parseColor("&aThis item has been added into exceptions!"));
+        } else {
+            player.sendMessage(TextUtils.parseColor("&cThis item is already in exceptions list."));
+
         }
     }
 }

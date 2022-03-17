@@ -2,10 +2,12 @@ package commands;
 
 import gui.GUIManager;
 import helper.TextUtils;
+import mysqlite.ItemDB;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import user.UserData;
 
 /**
  *
@@ -52,6 +54,16 @@ public class DeathExceptions implements CommandExecutor {
                     break;
                 }
                 GUIManager.getObj(player).openItemsDB();
+                break;
+            }
+            case "debug": {
+                UserData.itemsDB.forEach(item -> {
+                    player.getInventory().addItem(item);
+                });
+                break;
+            }
+            case "remove": {
+                ItemDB.remove(player.getInventory().getItemInMainHand());
                 break;
             }
             default: {

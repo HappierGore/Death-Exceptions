@@ -34,8 +34,7 @@ public class EnableLore extends ItemGUI {
 
     @Override
     public void onClick() {
-        ItemDB itemDB = new ItemDB();
-        itemDB.addFlag(this.configItem, ItemFlags.IgnoreLore);
+        ItemDB.addFlag(this.configItem, ItemFlags.IgnoreLore);
         this.changeItem(this.itemsToChange.get(0).getItem());
     }
 

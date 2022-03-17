@@ -44,8 +44,7 @@ public class DisableDisplay extends ItemGUI {
 
     @Override
     public void onClick() {
-        ItemDB itemDB = new ItemDB();
-        itemDB.removeFlag(this.configItem, ItemFlags.IgnoreDisplayName);
+        ItemDB.removeFlag(this.configItem, ItemFlags.IgnoreDisplayName);
         this.changeItem(this.itemsToChange.get(0).getItem());
     }
 

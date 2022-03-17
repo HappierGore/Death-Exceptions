@@ -25,7 +25,6 @@ public class ItemUtils {
     }
 
     public static boolean CompareItemsDB(ItemStack itemDropped) {
-        ItemDB itemDB = new ItemDB();
         boolean NBTOK = false, ENCHOK = false, NAMEOK = false, LOREOK = false, result = false;
 
         for (int i = 0; i < UserData.itemsDB.size(); i++) {
@@ -35,7 +34,7 @@ public class ItemUtils {
                 continue;
             }
 
-            List<ItemFlags> flags = itemDB.getFlags(UserData.itemsDB.get(i));
+            List<ItemFlags> flags = ItemDB.getFlags(UserData.itemsDB.get(i));
 
 //            System.out.println("Flags: " + flags.toString() + "\n");
             ItemMeta metaFiltered = itemInDB.getItemMeta();
