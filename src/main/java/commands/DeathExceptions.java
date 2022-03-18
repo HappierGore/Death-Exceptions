@@ -2,7 +2,6 @@ package commands;
 
 import gui.GUIManager;
 import helper.TextUtils;
-import mysqlite.ItemDB;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -55,16 +54,16 @@ public class DeathExceptions implements CommandExecutor {
                 GUIManager.getObj(player).openItemsDB();
                 break;
             }
-            case "debug": {
-                ItemDB.itemsDB.forEach(item -> {
-                    player.getInventory().addItem(item);
-                });
-                break;
-            }
-            case "remove": {
-                ItemDB.remove(player.getInventory().getItemInMainHand());
-                break;
-            }
+//            case "debug": {
+//                ItemDB.itemsDB.forEach(item -> {
+//                    player.getInventory().addItem(item);
+//                });
+//                break;
+//            }
+//            case "remove": {
+//                ItemDB.remove(player.getInventory().getItemInMainHand());
+//                break;
+//            }
             default: {
                 player.sendMessage(TextUtils.parseColor("&cThat command doesn't exist."));
                 break;
