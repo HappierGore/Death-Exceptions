@@ -7,7 +7,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import user.UserData;
 
 /**
  *
@@ -57,7 +56,7 @@ public class DeathExceptions implements CommandExecutor {
                 break;
             }
             case "debug": {
-                UserData.itemsDB.forEach(item -> {
+                ItemDB.itemsDB.forEach(item -> {
                     player.getInventory().addItem(item);
                 });
                 break;

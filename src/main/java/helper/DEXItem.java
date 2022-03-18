@@ -5,6 +5,7 @@ import de.tr7zw.nbtapi.NBTItem;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
@@ -12,14 +13,22 @@ import org.bukkit.inventory.ItemStack;
  */
 public final class DEXItem {
 
+    private static final List<String> defaultExceptions;
+
+    static {
+        defaultExceptions = new ArrayList<>();
+        defaultExceptions.add("UUID");
+    }
+
     public final String NBT;
     private final ItemStack finalItem;
 
     //Used when created from game
     public DEXItem(ItemStack item) {
         NBTContainer gottenNBT = NBTItem.convertItemtoNBT(item);
-        this.filterNBT(gottenNBT);
+        ItemUtils.filterNBT(gottenNBT, defaultExceptions);
         this.NBT = gottenNBT.toString();
+        fixAmount(item);
         this.finalItem = item;
     }
 
@@ -30,23 +39,10 @@ public final class DEXItem {
         this.finalItem = NBTItem.convertNBTtoItem(nbtContainer);
     }
 
-    //***************************
-    //          Helpers
-    //***************************
-    private void filterNBT(NBTContainer nbtItem) {
-        List<String> NBTExceptions = new ArrayList<>();
-
-        NBTExceptions.add("Enchantments");
-        NBTExceptions.add("ench");
-        NBTExceptions.add("display");
-        NBTExceptions.add("UUID");
-
-        nbtItem.getKeys().forEach(key -> {
-            System.out.println("KEY: " + key);
-            if (NBTExceptions.contains(key)) {
-                nbtItem.removeKey(key);
-            }
-        });
+    private void fixAmount(ItemStack item) {
+        if (item.getAmount() > 1) {
+            item.setAmount(1);
+        }
     }
 
     //***************************

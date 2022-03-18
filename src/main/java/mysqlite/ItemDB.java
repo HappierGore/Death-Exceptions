@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.inventory.ItemStack;
-import user.UserData;
 
 /**
  *
@@ -18,8 +17,8 @@ import user.UserData;
 public class ItemDB extends MySQLite {
 
     public static void loadAllData() {
-        UserData.itemsDB.clear();
-        UserData.itemsDB.addAll(getItems());
+        itemsDB.clear();
+        itemsDB.addAll(getItems());
     }
 
     private static void updateFlags(ItemStack item, List<ItemFlags> flags) {
@@ -50,16 +49,18 @@ public class ItemDB extends MySQLite {
             // set the corresponding param
             ResultSet rs = db.executeQuery();
 
-            String flagDB = rs.getString("flags");
+            while (rs.next()) {
+                String flagDB = rs.getString("flags");
 
-            if (flagDB != null) {
-                for (String flag : flagDB.split(",")) {
-                    flags.add(ItemFlags.valueOf(flag.trim()));
+                if (flagDB != null) {
+                    for (String flag : flagDB.split(",")) {
+                        flags.add(ItemFlags.valueOf(flag.trim()));
+                    }
                 }
             }
 
         } catch (SQLException e) {
-            System.out.println("Error from getFlags: " + e.getMessage());
+            System.out.println("Error from getFlags: " + e);
         }
         return flags;
     }

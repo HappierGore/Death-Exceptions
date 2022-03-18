@@ -12,12 +12,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import org.bukkit.inventory.ItemStack;
-import user.UserData;
 
 /**
  * @author HappierGore
  */
 public abstract class MySQLite {
+
+    public static List<ItemStack> itemsDB;
+
+    static {
+        itemsDB = new ArrayList<>();
+    }
 
     public static String path;
     public static final String TABLE = "savedItems";
@@ -45,7 +50,7 @@ public abstract class MySQLite {
 
             // update 
             db.executeUpdate();
-            UserData.itemsDB.add(fixedItem.getItem());
+            ItemDB.itemsDB.add(fixedItem.getItem());
         } catch (SQLException e) {
             System.out.println("Error from addItem: " + e.getMessage());
         }
@@ -62,7 +67,7 @@ public abstract class MySQLite {
 
             db.setString(1, fixedItem.NBT);
 
-            UserData.itemsDB.remove(fixedItem.getItem());
+            itemsDB.remove(fixedItem.getItem());
 
             db.executeUpdate();
 

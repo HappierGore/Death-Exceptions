@@ -17,11 +17,9 @@ import org.bukkit.inventory.ItemStack;
 public class UserData {
 
     public static Map<String, UserData> userData;
-    public static List<ItemStack> itemsDB;
 
     static {
         userData = new HashMap<>();
-        itemsDB = new ArrayList<>();
     }
 
     public static UserData getObj(String UUID) {

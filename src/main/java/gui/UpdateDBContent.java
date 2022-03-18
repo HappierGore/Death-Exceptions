@@ -3,7 +3,6 @@ package gui;
 import helper.ItemUtils;
 import mysqlite.ItemDB;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import user.UserData;
 
 /**
  *
@@ -22,7 +21,7 @@ public class UpdateDBContent {
         //When item is added
         e.getInventory().forEach(item -> {
             if (item != null) {
-                if (!UserData.itemsDB.contains(item)) {
+                if (!ItemDB.itemsDB.contains(item)) {
                     ItemDB.addItem(item);
                 }
             }

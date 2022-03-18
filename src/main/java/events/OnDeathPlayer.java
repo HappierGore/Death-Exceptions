@@ -39,7 +39,7 @@ public final class OnDeathPlayer {
 
                 //Add ignore NBT, Enchantments, name, lore option. with gui menu
                 //Prevent reset dropData if reload (Save another DB with userInfo), like PlayerVaults
-                if (ItemUtils.CompareItemsDB(item)) {
+                if (ItemUtils.compareItems(item)) {
                     userData.itemsToRespawn.add(item);
                 }
             });
