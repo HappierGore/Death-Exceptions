@@ -59,7 +59,7 @@ public class EventListener extends JavaPlugin implements Listener {
 
         MySQLite.path = "jdbc:sqlite:" + dbPath.replace('\\', '/') + "/SavedItems.db";
 
-        new ItemDB().loadAllData();
+        ItemDB.loadAllData();
 
         configYML = getConfig();
 

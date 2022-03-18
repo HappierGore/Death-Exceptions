@@ -2,11 +2,11 @@ package gui;
 
 import java.util.HashMap;
 import java.util.Map;
+import mysqlite.ItemDB;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import user.UserData;
 
 /**
  *
@@ -45,7 +45,7 @@ public class GUIManager {
     public GUIManager(Player player) {
 
         this.player = player;
-        int rows = (int) (Math.ceil((UserData.itemsDB.size() / 9.0f) + 0.5));
+        int rows = (int) (Math.ceil((ItemDB.itemsDB.size() / 9.0f) + 0.5));
 
         inv = Bukkit.createInventory(null, rows * 9, "Protected items");
 
@@ -54,7 +54,7 @@ public class GUIManager {
 
     public void openItemsDB() {
         inv.clear();
-        UserData.itemsDB.forEach((t) -> {
+        ItemDB.itemsDB.forEach((t) -> {
             inv.addItem(t);
         });
         player.openInventory(inv);

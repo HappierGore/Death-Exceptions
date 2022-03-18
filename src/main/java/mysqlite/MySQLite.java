@@ -1,87 +1,100 @@
 package mysqlite;
 
+import de.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTItem;
 import helper.DEXItem;
-import helper.TextUtils;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import java.sql.SQLException;
-import org.bukkit.entity.Player;
+import java.util.ArrayList;
+import java.util.List;
 import org.bukkit.inventory.ItemStack;
-import user.UserData;
 
 /**
  * @author HappierGore
  */
 public abstract class MySQLite {
 
-    public static String path;
-    public final String table;
+    public static List<ItemStack> itemsDB;
 
-    public MySQLite(String table) {
-        this.table = table;
+    static {
+        itemsDB = new ArrayList<>();
     }
 
-    public Connection connect() {
+    public static String path;
+    public static final String TABLE = "savedItems";
+
+    public static Connection connect() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(path);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error from connect: " + e.getMessage());
         }
         return conn;
     }
 
-    public boolean addItem(ItemStack item, Player player) {
+    public static boolean addItem(ItemStack item) {
+
         DEXItem fixedItem = new DEXItem(item);
 
-        if (UserData.itemsDB.contains(fixedItem.getItem())) {
-            player.sendMessage(TextUtils.parseColor("&cThis item is already in exceptions list."));
-            return false;
-        }
-
-        String sql = "INSERT INTO " + table + "(material, displayname, lore, nbt, enchantments) VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + TABLE + "(NBT) VALUES(?)";
 
         try (Connection conn = connect(); PreparedStatement db = conn.prepareStatement(sql)) {
 
             // set the corresponding param
-            db.setString(1, fixedItem.MATERIAL);
-            db.setString(2, fixedItem.DISPLAYNAME);
-            db.setString(3, fixedItem.LORE);
-            db.setString(4, fixedItem.NBT);
-            db.setString(5, fixedItem.ENCHANTMENTS);
+            db.setString(1, fixedItem.NBT);
 
             // update 
             db.executeUpdate();
-            UserData.itemsDB.add(fixedItem.getItem());
+            ItemDB.itemsDB.add(fixedItem.getItem());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error from addItem: " + e.getMessage());
         }
         return true;
     }
 
-    public void remove(ItemStack item) {
+    public static void remove(ItemStack item) {
 
         DEXItem fixedItem = new DEXItem(item);
 
-        String sql = "DELETE FROM " + table + " WHERE enchantments is ? AND material is ? AND displayname is ? AND lore is ? AND nbt is ?";
+        String sql = "DELETE FROM " + TABLE + " WHERE NBT is ?";
 
-        try (Connection conn = this.connect(); PreparedStatement db = conn.prepareStatement(sql)) {
-            // set the corresponding param
-            db.setString(1, fixedItem.ENCHANTMENTS);
-            db.setString(2, fixedItem.MATERIAL);
-            db.setString(3, fixedItem.DISPLAYNAME);
-            db.setString(4, fixedItem.LORE);
-            db.setString(5, fixedItem.NBT);
+        try (Connection conn = connect(); PreparedStatement db = conn.prepareStatement(sql)) {
 
-            UserData.itemsDB.remove(fixedItem.getItem());
+            db.setString(1, fixedItem.NBT);
+
+            itemsDB.remove(fixedItem.getItem());
 
             db.executeUpdate();
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            System.out.println("Error from remove: " + e.getMessage());
         }
+    }
+
+    public static List<ItemStack> getItems() {
+        List<ItemStack> itemsDB = new ArrayList<>();
+
+        String sql = "SELECT NBT FROM " + TABLE;
+
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                NBTContainer nbtItem = new NBTContainer(rs.getString("NBT"));
+                itemsDB.add(NBTItem.convertNBTtoItem(nbtItem));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error from getItems: " + e.getMessage());
+        }
+
+        return itemsDB;
     }
 
 }

@@ -114,7 +114,7 @@ public final class ConfigItems {
         enabledItem.itemsToChange.add(disabledItem);
         disabledItem.itemsToChange.add(enabledItem);
 
-        if (new ItemDB().getFlags(this.configureItem).contains(flag)) {
+        if (ItemDB.getFlags(this.configureItem).contains(flag)) {
             disabledItem.loadItem();
 //            enabledItem.getInventory().setItem(disabledItem.getSlot(), disabledItem.getItem());
         } else {

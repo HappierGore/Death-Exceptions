@@ -36,8 +36,7 @@ public class EnableNBT extends ItemGUI {
 //**********************
     @Override
     public void onClick() {
-        ItemDB itemDB = new ItemDB();
-        itemDB.addFlag(this.configItem, ItemFlags.IgnoreNBT);
+        ItemDB.addFlag(this.configItem, ItemFlags.IgnoreNBT);
         this.changeItem(this.itemsToChange.get(0).getItem());
     }
 }

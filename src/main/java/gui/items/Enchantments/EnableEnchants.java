@@ -34,8 +34,7 @@ public class EnableEnchants extends ItemGUI {
 
     @Override
     public void onClick() {
-        ItemDB itemDB = new ItemDB();
-        itemDB.addFlag(this.configItem, ItemFlags.IgnoreEnchantments);
+        ItemDB.addFlag(this.configItem, ItemFlags.IgnoreEnchantments);
         this.changeItem(this.itemsToChange.get(0).getItem());
     }
 

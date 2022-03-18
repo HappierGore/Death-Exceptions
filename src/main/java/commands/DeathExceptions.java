@@ -54,6 +54,16 @@ public class DeathExceptions implements CommandExecutor {
                 GUIManager.getObj(player).openItemsDB();
                 break;
             }
+//            case "debug": {
+//                ItemDB.itemsDB.forEach(item -> {
+//                    player.getInventory().addItem(item);
+//                });
+//                break;
+//            }
+//            case "remove": {
+//                ItemDB.remove(player.getInventory().getItemInMainHand());
+//                break;
+//            }
             default: {
                 player.sendMessage(TextUtils.parseColor("&cThat command doesn't exist."));
                 break;
