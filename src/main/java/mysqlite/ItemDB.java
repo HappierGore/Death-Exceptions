@@ -1,5 +1,7 @@
 package mysqlite;
 
+import de.tr7zw.nbtapi.NBTContainer;
+import de.tr7zw.nbtapi.NBTItem;
 import gui.items.ItemFlags;
 import helper.DEXItem;
 import java.sql.Connection;
@@ -14,30 +16,11 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author HappierGore
  */
-public class ItemDB extends MySQLite {
+public class ItemDB extends SQLite {
 
-    public static void loadAllData() {
-        itemsDB.clear();
-        itemsDB.addAll(getItems());
-    }
-
-    private static void updateFlags(ItemStack item, List<ItemFlags> flags) {
-        String flagString = flags.toString().equals("[]") ? null : flags.toString().replace("[", "").replace("]", "");
-        String sql = "UPDATE " + TABLE + " SET flags = ? WHERE NBT is ?";
-
-        try (Connection conn = connect(); PreparedStatement db = conn.prepareStatement(sql)) {
-
-            // set the corresponding param
-            db.setString(1, flagString);
-            db.setString(2, new DEXItem(item).NBT);
-
-            // update 
-            db.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Error from updateFlags: " + e.getMessage());
-        }
-    }
-
+    //*************************************
+    //              Flags
+    //*************************************
     public static List<ItemFlags> getFlags(ItemStack item) {
         List<ItemFlags> flags = new ArrayList<>();
 
@@ -81,4 +64,103 @@ public class ItemDB extends MySQLite {
             updateFlags(item, flags);
         }
     }
+
+    //*******************
+    //      Helper
+    //*******************
+    private static void updateFlags(ItemStack item, List<ItemFlags> flags) {
+        String flagString = flags.toString().equals("[]") ? null : flags.toString().replace("[", "").replace("]", "");
+        String sql = "UPDATE " + TABLE + " SET flags = ? WHERE NBT is ?";
+
+        try (Connection conn = connect(); PreparedStatement db = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            db.setString(1, flagString);
+            db.setString(2, new DEXItem(item).NBT);
+
+            // update 
+            db.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error from updateFlags: " + e.getMessage());
+        }
+    }
+
+    //*************************************
+    //              Items
+    //*************************************
+    private static final List<ItemStack> itemsDB;
+
+    static {
+        itemsDB = new ArrayList<>();
+    }
+
+    public static boolean addItem(ItemStack item) {
+
+        DEXItem fixedItem = new DEXItem(item);
+
+        if (itemsDB.contains(fixedItem.getItem())) {
+            return false;
+        }
+
+        String sql = "INSERT INTO " + TABLE + "(NBT) VALUES(?)";
+
+        try (Connection conn = connect(); PreparedStatement db = conn.prepareStatement(sql)) {
+            db.setString(1, fixedItem.NBT);
+
+            db.executeUpdate();
+            ItemDB.itemsDB.add(fixedItem.getItem());
+        } catch (SQLException e) {
+            System.out.println("Error from addItem: " + e.getMessage());
+        }
+        return true;
+    }
+
+    public static void removeItem(ItemStack item) {
+
+        DEXItem fixedItem = new DEXItem(item);
+
+        String sql = "DELETE FROM " + TABLE + " WHERE NBT is ?";
+
+        try (Connection conn = connect(); PreparedStatement db = conn.prepareStatement(sql)) {
+
+            db.setString(1, fixedItem.NBT);
+
+            itemsDB.remove(fixedItem.getItem());
+
+            db.executeUpdate();
+
+        } catch (SQLException e) {
+            System.out.println("Error from remove: " + e.getMessage());
+        }
+    }
+
+    public static List<ItemStack> getDBItems() {
+        List<ItemStack> newList = new ArrayList<>();
+        for (ItemStack item : itemsDB) {
+            newList.add(item.clone());
+        }
+        return newList;
+    }
+
+    //*******************
+    //      Helper
+    //*******************
+    public static void loadItems() {
+
+        String sql = "SELECT NBT FROM " + TABLE;
+
+        try (Connection conn = connect(); PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            // set the corresponding param
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                NBTContainer nbtItem = new NBTContainer(rs.getString("NBT"));
+                itemsDB.add(NBTItem.convertNBTtoItem(nbtItem));
+            }
+        } catch (SQLException e) {
+            System.out.println("Error from loadItems: " + e.getMessage());
+        }
+    }
+
 }

@@ -1,74 +1,31 @@
 package gui.items;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 /**
  *
  * @author HappierGore
  */
-public abstract class ItemGUI {
+public class ItemGUI {
 
     private Inventory inventory;
     private ItemStack item;
     private int slot;
-    public final List<ItemGUI> itemsToChange = new ArrayList<>();
 
-    public ItemGUI(Inventory inventory, int slot) {
+    /**
+     * Initialize the ItemGUI Class, it's like the constructor, but for
+     * problems, constructor won't help.
+     *
+     * @param slot slot
+     * @param item Item
+     * @param inv Inventory
+     */
+    public void Initialize(Inventory inv, ItemStack item, int slot) {
+        this.inventory = inv;
+        this.item = item;
         this.slot = slot;
-        this.inventory = inventory;
     }
-
-    public void changeItem(ItemStack newItem) {
-        inventory.setItem(slot, newItem);
-    }
-
-    public void pushLore(List<String> lore) {
-        this.item.getItemMeta().getLore().addAll(lore);
-
-    }
-
-    public final ItemStack generateItem(Map<Enchantment, Integer> enchantments, Material material, String displayName, List<String> lore, List<ItemFlag> flags) {
-        ItemMeta itemMeta = Bukkit.getItemFactory().getItemMeta(material);
-
-        if (enchantments != null) {
-            enchantments.forEach((enchant, level) -> {
-                itemMeta.addEnchant(enchant, level, true);
-            });
-        }
-
-        if (displayName != null) {
-            itemMeta.setDisplayName(displayName);
-        }
-
-        if (lore != null) {
-            itemMeta.setLore(lore);
-        }
-
-        if (flags != null) {
-            flags.forEach(flag -> {
-                itemMeta.addItemFlags(flag);
-            });
-        }
-
-        ItemStack newItem = new ItemStack(material);
-        newItem.setItemMeta(itemMeta);
-        return newItem;
-    }
-
-    public void loadItem() {
-        inventory.setItem(this.slot, this.item);
-    }
-
-    public abstract void onClick();
 
     //*****************
     //      GETTERS

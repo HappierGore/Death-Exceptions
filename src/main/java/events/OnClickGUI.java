@@ -25,7 +25,7 @@ public class OnClickGUI {
         if (e.getClickedInventory() == null) {
             return;
         }
-        if (e.getClickedInventory().equals(guiManager.inv)) {
+        if (e.getClickedInventory().equals(guiManager.DBInventory)) {
             if (e.getClick().isRightClick()) {
 
                 if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) {
@@ -47,4 +47,5 @@ public class OnClickGUI {
             guiManager.configItems.evaluate(item);
         }
     }
+
 }

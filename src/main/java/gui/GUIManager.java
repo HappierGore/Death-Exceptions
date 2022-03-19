@@ -36,33 +36,38 @@ public class GUIManager {
     //******************
     //      Class
     //******************
-    public final Inventory inv;
+    public final Inventory DBInventory;
     public final Inventory configInv;
+    public ConfigItems configItems;
     public boolean configuring = false;
     private final Player player;
-    public ConfigItems configItems;
 
     public GUIManager(Player player) {
 
         this.player = player;
-        int rows = (int) (Math.ceil((ItemDB.itemsDB.size() / 9.0f) + 0.5));
+        int rows = (int) (Math.ceil((ItemDB.getDBItems().size() / 9.0f) + 0.5));
 
-        inv = Bukkit.createInventory(null, rows * 9, "Protected items");
+        DBInventory = Bukkit.createInventory(null, rows * 9, "Protected items");
 
         configInv = Bukkit.createInventory(null, 27, "Configure item");
     }
 
     public void openItemsDB() {
-        inv.clear();
-        ItemDB.itemsDB.forEach((t) -> {
-            inv.addItem(t);
+        DBInventory.clear();
+        ItemDB.getDBItems().forEach((t) -> {
+            DBInventory.addItem(t);
         });
-        player.openInventory(inv);
+        player.openInventory(DBInventory);
     }
 
     public void openConfigItem(final ItemStack item) {
-        configItems = new ConfigItems(item, configInv, player);
         configuring = true;
+        this.configItems = new ConfigItems(item, configInv, player);
+        configItems.loadAllItems();
         player.openInventory(configInv);
+    }
+
+    public Player getPlayer() {
+        return this.player;
     }
 }

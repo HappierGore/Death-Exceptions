@@ -22,8 +22,10 @@ public class DeathExceptions implements CommandExecutor {
 
         Player player = (Player) sender;
 
+        String availableParameters = TextUtils.parseColor("&cUnknown argument. Available arguments: &acreate, add, gui");
+
         if (args.length == 0) {
-            player.sendMessage(TextUtils.parseColor("&cImcomplent command, need to specify arguments. Ex: &bcreate, &aadd"));
+            player.sendMessage(availableParameters);
             return false;
         }
 
@@ -65,7 +67,7 @@ public class DeathExceptions implements CommandExecutor {
 //                break;
 //            }
             default: {
-                player.sendMessage(TextUtils.parseColor("&cThat command doesn't exist."));
+                player.sendMessage(availableParameters);
                 break;
             }
         }

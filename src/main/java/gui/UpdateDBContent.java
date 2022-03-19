@@ -1,6 +1,5 @@
 package gui;
 
-import helper.ItemUtils;
 import mysqlite.ItemDB;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 
@@ -12,16 +11,16 @@ public class UpdateDBContent {
 
     public static void updateDBContent(InventoryCloseEvent e) {
         // When removes item
-        ItemUtils.cloneDBItems().forEach(item -> {
+        ItemDB.getDBItems().forEach(item -> {
             if (!e.getInventory().contains(item)) {
-                ItemDB.remove(item);
+                ItemDB.removeItem(item);
             }
         });
 
         //When item is added
         e.getInventory().forEach(item -> {
             if (item != null) {
-                if (!ItemDB.itemsDB.contains(item)) {
+                if (!ItemDB.getDBItems().contains(item)) {
                     ItemDB.addItem(item);
                 }
             }

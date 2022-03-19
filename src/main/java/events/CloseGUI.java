@@ -21,7 +21,7 @@ public class CloseGUI {
 
         GUIManager guiManager = GUIManager.getObj((Player) e.getPlayer());
 
-        if (e.getInventory().equals(guiManager.inv)) {
+        if (e.getInventory().equals(guiManager.DBInventory)) {
             UpdateDBContent.updateDBContent(e);
         }
         if (e.getInventory().equals(guiManager.configInv)) {

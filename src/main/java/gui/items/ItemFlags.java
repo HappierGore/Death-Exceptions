@@ -8,5 +8,5 @@ public enum ItemFlags {
     IgnoreNBT,
     IgnoreEnchantments,
     IgnoreLore,
-    IgnoreDisplayName
+    IgnoreDisplayName,
 }
