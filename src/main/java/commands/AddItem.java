@@ -18,16 +18,16 @@ public class AddItem {
             return;
         }
 
-//        if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
-//            player.sendMessage(TextUtils.parseColor("&cYou need an item to execute this command"));
-//            return;
-//        }
-//
-//        if (ItemDB.addItem(player.getInventory().getItemInMainHand())) {
-//            player.sendMessage(TextUtils.parseColor("&aThis item has been added into exceptions!"));
-//        } else {
-//            player.sendMessage(TextUtils.parseColor("&cThis item is already in exceptions list."));
-//
-//        }
+        if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
+            player.sendMessage(TextUtils.parseColor("&cYou need an item to execute this command"));
+            return;
+        }
+
+        if (ItemDB.addItem(player.getInventory().getItemInMainHand())) {
+            player.sendMessage(TextUtils.parseColor("&aThis item has been added into exceptions!"));
+        } else {
+            player.sendMessage(TextUtils.parseColor("&cThis item is already in exceptions list."));
+
+        }
     }
 }
