@@ -18,12 +18,12 @@ public class CreateItem {
             return;
         }
 
-        if (player.getInventory().getItemInMainHand().getType() == Material.AIR) {
+        if (player.getInventory().getItemInHand().getType() == Material.AIR) {
             player.sendMessage(TextUtils.parseColor("&cYou need an item to execute this command"));
             return;
         }
 
-        NBTItem item = new NBTItem(player.getInventory().getItemInMainHand());
+        NBTItem item = new NBTItem(player.getInventory().getItemInHand());
 
         int slot = player.getInventory().getHeldItemSlot();
 

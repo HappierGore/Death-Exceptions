@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 public class OnClickGUI {
 
     public static void onClickGUI(InventoryClickEvent e) {
+        System.out.println("Click event listened!");
 
         if (e.getClickedInventory() == null || e.getCurrentItem() == null) {
             return;
