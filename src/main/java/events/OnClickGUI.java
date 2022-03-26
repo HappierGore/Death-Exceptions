@@ -1,10 +1,9 @@
 package events;
 
-import gui.GUIManager;
-import org.bukkit.Material;
+import gui.menus.GUI;
+import java.util.Set;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.inventory.ItemStack;
 
 /**
  *
@@ -13,39 +12,22 @@ import org.bukkit.inventory.ItemStack;
 public class OnClickGUI {
 
     public static void onClickGUI(InventoryClickEvent e) {
+
+        if (e.getClickedInventory() == null || e.getCurrentItem() == null) {
+            return;
+        }
         Player player = (Player) e.getWhoClicked();
 
-        if (!GUIManager.currentData.containsKey(player.getUniqueId().toString())) {
+        if (!GUI.GUIData.containsKey(player)) {
             return;
         }
 
-        GUIManager guiManager = GUIManager.getObj(player);
+        Set<GUI> guis = GUI.GUIData.get(player);
 
-        //First inventory, where all items in DB are loaded
-        if (e.getClickedInventory() == null) {
-            return;
-        }
-        if (e.getClickedInventory().equals(guiManager.DBInventory)) {
-            if (e.getClick().isRightClick()) {
-
-                if (e.getCurrentItem() == null || e.getCurrentItem().getType() == Material.AIR) {
-                    return;
-                }
-
-                e.setCancelled(true);
-                guiManager.openConfigItem(e.getCurrentItem());
+        guis.forEach(gui -> {
+            if (gui.getInventory().hashCode() == e.getClickedInventory().hashCode()) {
+                gui.evaluateItem(e.getCurrentItem(), e);
             }
-        }
-
-        //Second inventory, it's to configure
-        if (e.getClickedInventory().equals(guiManager.configInv)) {
-            if (e.getCurrentItem() == null) {
-                return;
-            }
-            e.setCancelled(true);
-            ItemStack item = e.getCurrentItem();
-            guiManager.configItems.evaluate(item);
-        }
+        });
     }
-
 }

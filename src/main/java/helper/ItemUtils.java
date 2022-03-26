@@ -6,7 +6,7 @@ import gui.items.ItemFlags;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import mysqlite.ItemDB;
+import sqlite.ItemDB;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

@@ -1,11 +1,11 @@
-package mysqlite;
+package sqlite;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import static mysqlite.SQLite.TABLE;
-import static mysqlite.SQLite.connect;
+import static sqlite.SQLite.TABLE;
+import static sqlite.SQLite.connect;
 
 /**
  *
@@ -19,6 +19,7 @@ public class CheckUpdatedDB extends SQLite {
 
         try (Connection conn = connect(); PreparedStatement db = conn.prepareStatement(sql)) {
             db.executeQuery();
+            db.close();
 
         } catch (SQLException e) {
             if (e.getErrorCode() == 1 || e.toString().contains("no such column")) {
@@ -26,7 +27,7 @@ public class CheckUpdatedDB extends SQLite {
                 generateModuleColumn();
                 return;
             }
-            System.out.println("[DataBase] Error from getFlags, with code: " + e.getErrorCode() + "\n" + e);
+            System.out.println("[DataBase] Error from checkDBVersion, with code: " + e.getErrorCode() + "\n" + e);
         }
     }
 
@@ -37,6 +38,7 @@ public class CheckUpdatedDB extends SQLite {
         try (Connection conn = connect(); Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
             System.out.println("[DataBase] Column \"Modules\" has been created successfully");
+            stmt.close();
 
         } catch (SQLException e) {
             System.out.println("[DataBase] Error while creating the column \"Modules\": " + e);

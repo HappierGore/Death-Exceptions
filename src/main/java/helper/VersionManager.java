@@ -28,6 +28,9 @@ public class VersionManager {
             case "SHULKER_BOX": {
                 return "SILVER_SHULKER_BOX";
             }
+            case "EXPERIENCE_BOTTLE": {
+                return "EXP_BOTTLE";
+            }
 
         }
 

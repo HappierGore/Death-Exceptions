@@ -1,12 +1,14 @@
 package gui.items;
 
-import gui.GUIManager;
 import gui.items.types.Behaviour;
+import gui.menus.DBGUI;
 import helper.ItemUtils;
 import helper.TextUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 /**
  *
@@ -17,23 +19,25 @@ public class Back extends Behaviour {
     private final Player player;
 
     public Back(Inventory inventory, int slot, Player player) {
-        final String displayName = TextUtils.parseColor("&9Regresar");
-
-        Initialize(inventory, ItemUtils.generateItem(null, Material.BARRIER, displayName, null, null), slot);
-
+        super(inventory, slot);
         this.player = player;
     }
 
     @Override
-    public void onClick() {
+    public void onClick(InventoryClickEvent e) {
         player.closeInventory();
-        GUIManager guiManager = GUIManager.getObj(player);
-        guiManager.openItemsDB();
+        DBGUI dbMenu = new DBGUI(this.player);
+        dbMenu.open(null);
     }
 
     @Override
     public void onLoad() {
         this.getInventory().setItem(getSlot(), this.getItem());
+    }
+
+    @Override
+    public ItemStack generateMainItem() {
+        return ItemUtils.generateItem(null, Material.BARRIER, TextUtils.parseColor("&9Regresar"), null, null);
     }
 
 }

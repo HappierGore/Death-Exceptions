@@ -1,4 +1,4 @@
-package mysqlite;
+package sqlite;
 
 import com.happiergore.deathexceptions.EventListener;
 import static helper.IOHelper.ExportResource;

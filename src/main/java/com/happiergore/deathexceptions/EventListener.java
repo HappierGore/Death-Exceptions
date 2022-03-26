@@ -6,11 +6,11 @@ import events.CloseGUI;
 import events.OnClickGUI;
 import events.OnDeathPlayer;
 import events.OnRespawnPlayer;
-import gui.GUIManager;
+import gui.menus.GUI;
 import helper.TextUtils;
 import helper.VersionManager;
-import mysqlite.ItemDB;
-import mysqlite.SQLite;
+import sqlite.ItemDB;
+import sqlite.SQLite;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
@@ -59,8 +59,8 @@ public class EventListener extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        GUIManager.currentData.keySet().forEach(key -> {
-            GUIManager.currentData.get(key).getPlayer().closeInventory();
+        GUI.GUIData.keySet().forEach(key -> {
+            key.closeInventory();
         });
     }
 

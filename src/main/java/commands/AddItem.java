@@ -1,7 +1,7 @@
 package commands;
 
 import helper.TextUtils;
-import mysqlite.ItemDB;
+import sqlite.ItemDB;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 

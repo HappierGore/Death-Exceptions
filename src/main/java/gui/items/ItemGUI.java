@@ -7,25 +7,19 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author HappierGore
  */
-public class ItemGUI {
+public abstract class ItemGUI {
 
     private Inventory inventory;
     private ItemStack item;
     private int slot;
 
-    /**
-     * Initialize the ItemGUI Class, it's like the constructor, but for
-     * problems, constructor won't help.
-     *
-     * @param slot slot
-     * @param item Item
-     * @param inv Inventory
-     */
-    public void Initialize(Inventory inv, ItemStack item, int slot) {
-        this.inventory = inv;
-        this.item = item;
+    public ItemGUI(Inventory inventory, int slot) {
+        this.inventory = inventory;
+        this.item = this.generateMainItem();
         this.slot = slot;
     }
+
+    public abstract ItemStack generateMainItem();
 
     //*****************
     //      GETTERS

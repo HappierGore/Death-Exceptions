@@ -1,16 +1,17 @@
-package gui.items;
+package gui.items.configMenu;
 
+import gui.items.ItemFlags;
 import gui.items.types.SwitchItem;
 import helper.ItemUtils;
 import helper.TextUtils;
-import helper.VersionManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import mysqlite.ItemDB;
+import sqlite.ItemDB;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -21,39 +22,26 @@ import org.bukkit.inventory.ItemStack;
  */
 public class DisableNBT extends SwitchItem {
 
-    private final ItemStack initialItem;
     private final ItemStack configItem;
-    private final ItemStack switchItem;
-    private boolean condition;
     private final ItemFlags flag = ItemFlags.IgnoreNBT;
 
     public DisableNBT(Inventory inv, int slot, ItemStack configItem) {
-        this.initialItem = generateInitialItem();
-        this.switchItem = generateSwitchItem();
+        super(inv, slot);
         this.configItem = configItem;
-        updateCondition();
-        Initialize(inv, slot, this.initialItem, this.switchItem, condition);
     }
 
     @Override
-    public void onClick() {
-        super.onClick();
-        if (!this.condition) {
+    public void onClick(InventoryClickEvent e) {
+        super.onClick(e);
+        if (!this.loadCondition()) {
             ItemDB.addFlag(this.configItem, flag);
         } else {
             ItemDB.removeFlag(this.configItem, flag);
         }
-        this.updateCondition();
     }
 
-    //**********************
-    //      Helpers
-    //**********************
-    private void updateCondition() {
-        this.condition = ItemDB.getFlags(configItem).contains(flag);
-    }
-
-    private ItemStack generateSwitchItem() {
+    @Override
+    public ItemStack generateSwitchItem() {
 
         final Map<Enchantment, Integer> enchants = new HashMap<>();
         enchants.put(Enchantment.LURE, 1);
@@ -69,7 +57,8 @@ public class DisableNBT extends SwitchItem {
         return ItemUtils.generateItem(enchants, Material.BOOK, displayName, lore, flags);
     }
 
-    private ItemStack generateInitialItem() {
+    @Override
+    public ItemStack generateMainItem() {
 
         final String displayName = TextUtils.parseColor("&6Ignore NBT Tags.");
         final List<String> lore = new ArrayList<>();
@@ -77,6 +66,11 @@ public class DisableNBT extends SwitchItem {
         lore.add(TextUtils.parseColor("&benable this option."));
 
         return ItemUtils.generateItem(null, Material.BOOK, displayName, lore, null);
+    }
+
+    @Override
+    public boolean loadCondition() {
+        return ItemDB.getFlags(configItem).contains(flag);
     }
 
 }

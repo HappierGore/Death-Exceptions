@@ -1,6 +1,7 @@
 package gui.items.types;
 
 import helper.ItemUtils;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -8,27 +9,15 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author HappierGore
  */
-public class SwitchItem extends Behaviour {
+public abstract class SwitchItem extends Behaviour {
 
-    private ItemStack initialItem;
-    private ItemStack switchItem;
-    private boolean loadCondition;
+    private final ItemStack initialItem;
+    private final ItemStack switchItem;
 
-    /**
-     * Initialize the SwitchItem Class, it's like the constructor, but for
-     * problems, constructor won't help.
-     *
-     * @param inv Inventory
-     * @param slot slot
-     * @param switchItem switchItem
-     * @param initialItem initialItem
-     * @param loadCondition Condition to test to make thw switch
-     */
-    public void Initialize(Inventory inv, int slot, ItemStack initialItem, ItemStack switchItem, boolean loadCondition) {
-        super.Initialize(inv, initialItem, slot);
-        this.initialItem = initialItem;
-        this.switchItem = switchItem;
-        this.loadCondition = loadCondition;
+    public SwitchItem(Inventory inv, int slot) {
+        super(inv, slot);
+        this.initialItem = generateMainItem();
+        this.switchItem = generateSwitchItem();
     }
 
     private void updateItem() {
@@ -36,7 +25,8 @@ public class SwitchItem extends Behaviour {
     }
 
     @Override
-    public void onClick() {
+    public void onClick(InventoryClickEvent e) {
+        e.setCancelled(true);
         ItemStack toSwitch = ItemUtils.compareItems(this.getItem(), initialItem) ? switchItem : initialItem;
         this.getInventory().setItem(getSlot(), toSwitch);
         updateItem();
@@ -44,11 +34,16 @@ public class SwitchItem extends Behaviour {
 
     @Override
     public void onLoad() {
-        if (this.loadCondition) {
+        if (this.loadCondition()) {
             getInventory().setItem(getSlot(), switchItem);
         } else {
             getInventory().setItem(getSlot(), initialItem);
         }
         updateItem();
     }
+
+    public abstract boolean loadCondition();
+
+    public abstract ItemStack generateSwitchItem();
+
 }

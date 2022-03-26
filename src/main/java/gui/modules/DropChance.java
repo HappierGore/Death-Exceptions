@@ -1,4 +1,4 @@
-package modules;
+package gui.modules;
 
 /**
  *
@@ -13,6 +13,8 @@ public class DropChance {
     }
 
     public boolean dropChance() {
-        return (Math.random() * 100 > dropChance);
+        float probability = (float) Math.random() * 100;
+        System.out.println("Chance : " + probability + "\nDropChance: " + this.dropChance);
+        return (probability > dropChance);
     }
 }

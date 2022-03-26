@@ -1,7 +1,9 @@
 package events;
 
-import gui.GUIManager;
 import gui.UpdateDBContent;
+import gui.menus.GUI;
+import java.util.HashSet;
+import java.util.Set;
 import org.bukkit.entity.Player;
 
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -14,22 +16,26 @@ public class CloseGUI {
     // Check for clicks on items
 
     public static void onCloseInv(InventoryCloseEvent e) {
-
-        if (!GUIManager.currentData.containsKey(e.getPlayer().getUniqueId().toString())) {
+        
+        Player player = (Player) e.getPlayer();
+        
+        if (!GUI.GUIData.containsKey(player)) {
             return;
         }
-
-        GUIManager guiManager = GUIManager.getObj((Player) e.getPlayer());
-
-        if (e.getInventory().equals(guiManager.DBInventory)) {
-            UpdateDBContent.updateDBContent(e);
-        }
-        if (e.getInventory().equals(guiManager.configInv)) {
-            guiManager.configuring = false;
-        }
-        if (!guiManager.configuring) {
-            GUIManager.currentData.remove(e.getPlayer().getUniqueId().toString());
-        }
-
+        
+        Set<GUI> guiManager = GUI.GUIData.get(player);
+        
+        Set<GUI> guiManagerClone = new HashSet<>();
+        
+        guiManagerClone.addAll(guiManager);
+        
+        guiManagerClone.forEach(gui -> {
+            System.out.println("Hash Code :" + e.getInventory().hashCode() + " | " + gui.getInventory().hashCode());
+            if (gui.getInventory().hashCode() == e.getInventory().hashCode()) {
+                gui.close(e);
+                guiManager.remove(gui);
+            }
+        });
+        
     }
 }

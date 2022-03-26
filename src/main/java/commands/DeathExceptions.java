@@ -1,6 +1,6 @@
 package commands;
 
-import gui.GUIManager;
+import gui.menus.DBGUI;
 import helper.TextUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -53,7 +53,7 @@ public class DeathExceptions implements CommandExecutor {
                     sender.sendMessage(noPermissionMsg);
                     break;
                 }
-                GUIManager.getObj(player).openItemsDB();
+                new DBGUI(player).open(null);
                 break;
             }
 //            case "debug": {

@@ -1,4 +1,4 @@
-package mysqlite;
+package sqlite;
 
 import de.tr7zw.nbtapi.NBTContainer;
 import de.tr7zw.nbtapi.NBTItem;
@@ -41,6 +41,8 @@ public class ItemDB extends SQLite {
                     }
                 }
             }
+            db.close();
+            rs.close();
 
         } catch (SQLException e) {
             System.out.println("Error from getFlags: " + e);
@@ -80,6 +82,8 @@ public class ItemDB extends SQLite {
 
             // update 
             db.executeUpdate();
+
+            db.close();
         } catch (SQLException e) {
             System.out.println("Error from updateFlags: " + e.getMessage());
         }
@@ -109,13 +113,15 @@ public class ItemDB extends SQLite {
 
             db.executeUpdate();
             ItemDB.itemsDB.add(fixedItem.getItem());
+            db.close();
         } catch (SQLException e) {
             System.out.println("Error from addItem: " + e.getMessage());
         }
+        
         return true;
     }
 
-    public static void removeItem(ItemStack item) {
+    public static boolean removeItem(ItemStack item) {
 
         DEXItem fixedItem = new DEXItem(item);
 
@@ -128,10 +134,15 @@ public class ItemDB extends SQLite {
             itemsDB.remove(fixedItem.getItem());
 
             db.executeUpdate();
+            
+            db.close();
 
         } catch (SQLException e) {
+
             System.out.println("Error from remove: " + e.getMessage());
+            return false;
         }
+        return true;
     }
 
     public static List<ItemStack> getDBItems() {
@@ -158,6 +169,9 @@ public class ItemDB extends SQLite {
                 NBTContainer nbtItem = new NBTContainer(rs.getString("NBT"));
                 itemsDB.add(NBTItem.convertNBTtoItem(nbtItem));
             }
+            
+            pstmt.close();
+            rs.close();
         } catch (SQLException e) {
             System.out.println("Error from loadItems: " + e.getMessage());
         }
