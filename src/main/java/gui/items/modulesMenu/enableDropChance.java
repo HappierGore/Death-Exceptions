@@ -43,7 +43,7 @@ public class enableDropChance extends SwitchItem {
 
         List<ItemFlag> flags = new ArrayList<>();
         flags.add(ItemFlag.HIDE_ENCHANTS);
-        return ItemUtils.generateItem(ench, Material.NETHER_STAR, parseColor("&6Drop chance"), lore, flags);
+        return ItemUtils.generateItem(ench, Material.ENDER_PEARL, parseColor("&6Drop chance"), lore, flags);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class enableDropChance extends SwitchItem {
         lore.add(parseColor("&bEnable this option to add a chance"));
         lore.add(parseColor("&bto drop the item when player dies"));
 
-        return ItemUtils.generateItem(null, Material.NETHER_STAR, parseColor("&6Drop chance"), lore, null);
+        return ItemUtils.generateItem(null, Material.ENDER_PEARL, parseColor("&6Drop chance"), lore, null);
     }
 
 }

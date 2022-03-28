@@ -25,9 +25,7 @@ public class Back extends Behaviour {
 
     @Override
     public void onClick(InventoryClickEvent e) {
-        player.closeInventory();
-        DBGUI dbMenu = new DBGUI(this.player);
-        dbMenu.open(null);
+        new DBGUI(this.player).open();
     }
 
     @Override

@@ -53,7 +53,7 @@ public class DeathExceptions implements CommandExecutor {
                     sender.sendMessage(noPermissionMsg);
                     break;
                 }
-                new DBGUI(player).open(null);
+                new DBGUI(player).open();
                 break;
             }
 //            case "debug": {

@@ -36,7 +36,7 @@ public class SeeModules extends Behaviour {
 
     @Override
     public void onClick(InventoryClickEvent e) {
-        new ModulesGUI(this.configItem, (Player) e.getWhoClicked()).open(null);
+        new ModulesGUI(this.configItem, (Player) e.getWhoClicked()).open();
     }
 
     @Override

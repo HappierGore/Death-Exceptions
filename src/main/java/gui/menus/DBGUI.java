@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -18,24 +17,27 @@ import org.bukkit.inventory.ItemStack;
 public class DBGUI extends GUI {
 
     public DBGUI(Player player) {
-        super(Bukkit.createInventory(null, (int) (Math.ceil((ItemDB.getDBItems().size() / 9.0f) + 0.5)) * 9, "Protected items"), player);
+        super(player);
+        this.setInventory(Bukkit.createInventory((GUI) this, (int) (Math.ceil((ItemDB.getDBItems().size() / 9.0f) + 0.5)) * 9, "Protected items"));
     }
 
     @Override
-    public void onOpen(InventoryOpenEvent event) {
+    public void onInventoryClick(InventoryClickEvent e) {
+        ItemStack item = e.getCurrentItem();
+        if (e.getClick() == ClickType.RIGHT) {
+            if (item != null && item.getType() != Material.AIR) {
+                e.setCancelled(true);
+                new ConfigGUI(item, this.getPlayer()).open();
+            }
+        }
+    }
+
+    @Override
+    public void onOpen() {
         this.getInventory().clear();
         ItemDB.getDBItems().forEach((t) -> {
             this.getInventory().addItem(t);
         });
-    }
-
-    @Override
-    public void evaluateItem(ItemStack item, InventoryClickEvent e) {
-        if (e.getClick() == ClickType.RIGHT) {
-            if (item != null && item.getType() != Material.AIR) {
-                new ConfigGUI(item, this.getPlayer()).open(null);
-            }
-        }
     }
 
     @Override

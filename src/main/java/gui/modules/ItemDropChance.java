@@ -1,4 +1,4 @@
-package gui.items.modules;
+package gui.modules;
 
 import gui.items.types.SwitchItem;
 import helper.ItemUtils;

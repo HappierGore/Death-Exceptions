@@ -6,7 +6,6 @@ import events.CloseGUI;
 import events.OnClickGUI;
 import events.OnDeathPlayer;
 import events.OnRespawnPlayer;
-import gui.menus.GUI;
 import helper.TextUtils;
 import helper.VersionManager;
 import sqlite.ItemDB;
@@ -57,13 +56,6 @@ public class EventListener extends JavaPlugin implements Listener {
         getServer().getPluginManager().registerEvents(this, this);
     }
 
-    @Override
-    public void onDisable() {
-        GUI.GUIData.keySet().forEach(key -> {
-            key.closeInventory();
-        });
-    }
-
     //***********************
     //        EVENTOS
     //***********************
@@ -84,7 +76,7 @@ public class EventListener extends JavaPlugin implements Listener {
 
     @EventHandler
     public void InventoryClickEvent(InventoryClickEvent e) {
-        OnClickGUI.onClickGUI(e);
+        OnClickGUI.onInventoryClick(e);
     }
 
     //***********************
