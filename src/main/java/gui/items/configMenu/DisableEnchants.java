@@ -1,7 +1,9 @@
 package gui.items.configMenu;
 
+import gui.UpdateDBContent;
 import gui.items.ItemFlags;
 import gui.items.types.SwitchItem;
+import helper.DEXItem;
 import helper.ItemUtils;
 import helper.TextUtils;
 import helper.VersionManager;
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import sqlite.ItemDB;
+import sqlite.ItemDAO;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -23,22 +25,23 @@ import org.bukkit.inventory.ItemStack;
  */
 public class DisableEnchants extends SwitchItem {
 
-    private final ItemStack configItem;
+    private final DEXItem configItem;
     private final ItemFlags flag = ItemFlags.IgnoreEnchantments;
 
     public DisableEnchants(Inventory inv, int slot, ItemStack configItem) {
         super(inv, slot);
-        this.configItem = configItem;
+        this.configItem = ItemDAO.getItemFromDB(configItem);
     }
 
     @Override
     public void onClick(InventoryClickEvent e) {
         super.onClick(e);
         if (!this.loadCondition()) {
-            ItemDB.addFlag(this.configItem, flag);
+            configItem.getFlags().add(flag);
         } else {
-            ItemDB.removeFlag(this.configItem, flag);
+            configItem.getFlags().remove(flag);
         }
+        ItemDAO.updateItemInfo(this.configItem);
     }
 
     @Override
@@ -76,7 +79,7 @@ public class DisableEnchants extends SwitchItem {
 
     @Override
     public boolean loadCondition() {
-        return ItemDB.getFlags(configItem).contains(flag);
+        return configItem.getFlags().contains(flag);
     }
 
 }

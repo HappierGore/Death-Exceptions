@@ -6,7 +6,8 @@ import gui.items.ItemFlags;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import sqlite.ItemDB;
+import java.util.Set;
+import sqlite.ItemDAO;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -40,21 +41,22 @@ public class ItemUtils {
             itemDropped.setAmount(1);
         }
 
-        for (ItemStack itemDB : ItemDB.getDBItems()) {
-            List<ItemFlags> itemFlags = ItemDB.getFlags(itemDB);
+        for (DEXItem itemDB : ItemDAO.getItemDB()) {
+            Set<ItemFlags> itemFlags = itemDB.getFlags();
+
             if (itemFlags.contains(ItemFlags.IgnoreDisplayName)) {
                 removeDisplayName(itemDropped);
-                removeDisplayName(itemDB);
+                removeDisplayName(itemDB.getItem());
             }
 
             if (itemFlags.contains(ItemFlags.IgnoreEnchantments)) {
                 removeEnchantments(itemDropped);
-                removeEnchantments(itemDB);
+                removeEnchantments(itemDB.getItem());
             }
 
             if (itemFlags.contains(ItemFlags.IgnoreLore)) {
                 removeLore(itemDropped);
-                removeLore(itemDB);
+                removeLore(itemDB.getItem());
             }
             if (itemFlags.contains(ItemFlags.IgnoreNBT)) {
                 NBTItem nbt = new NBTItem(itemDropped);
@@ -62,7 +64,7 @@ public class ItemUtils {
                 itemDropped = nbt.getItem();
             }
 
-            result = compareItems(itemDropped, itemDB);
+            result = compareItems(itemDropped, itemDB.getItem());
 
             if (result) {
                 break;

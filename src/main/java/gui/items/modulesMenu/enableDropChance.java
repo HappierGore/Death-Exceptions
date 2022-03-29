@@ -1,6 +1,11 @@
 package gui.items.modulesMenu;
 
 import gui.items.types.SwitchItem;
+import gui.items.types.TextRequest;
+import gui.menus.GUI;
+import gui.menus.ModulesGUI;
+import gui.modules.Modules;
+import helper.DEXItem;
 import helper.ItemUtils;
 import static helper.TextUtils.parseColor;
 import java.util.ArrayList;
@@ -9,9 +14,13 @@ import java.util.List;
 import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import sqlite.ItemDAO;
 
 /**
  *
@@ -19,27 +28,83 @@ import org.bukkit.inventory.ItemStack;
  */
 public class enableDropChance extends SwitchItem {
 
-    private final ItemStack itemConfig;
+    private final DEXItem configItem;
+    private final Modules module = Modules.DropChance;
+
+    private final TextRequest txtRequest;
 
     public enableDropChance(Inventory inv, int slot, ItemStack itemConfig) {
         super(inv, slot);
-        this.itemConfig = itemConfig;
+
+        this.configItem = ItemDAO.getItemFromDB(itemConfig);
+
+        this.txtRequest = new TextRequest(inv, slot, "&bPlease, enter a number between 0 and 100") {
+            @Override
+            public void onLoad() {
+            }
+
+            @Override
+            public ItemStack generateMainItem() {
+                return null;
+            }
+
+            @Override
+            public void onTextEntry(PlayerChatEvent e) {
+                super.onTextEntry(e);
+                int chance = 0;
+                try {
+                    chance = Integer.parseInt(this.getText());
+                } catch (NumberFormatException ex) {
+                    e.getPlayer().sendMessage(parseColor("&cYou need to specify a valid number between 0 and 100. 0 was used as default."));
+                    chance = 0;
+                } finally {
+                    this.setText(String.valueOf(chance));
+                    configItem.getModules().put(module, String.valueOf(chance));
+                    ItemDAO.updateItemInfo(configItem);
+                    ((GUI) getInventory().getHolder()).open();
+                }
+            }
+        };
+    }
+
+    @Override
+    public void onClick(InventoryClickEvent e) {
+        super.onClick(e);
+        if (!this.loadCondition()) {
+            this.txtRequest.onClick(e);
+        } else {
+            this.configItem.getModules().remove(module);
+        }
+        ItemDAO.updateItemInfo(this.configItem);
     }
 
     @Override
     public boolean loadCondition() {
-        //Agregar en DB AddModule, remove Module y update Module
-        return false;
+        return configItem.getModules().containsKey(module);
     }
 
     @Override
     public ItemStack generateSwitchItem() {
+        return generateMainItem();
+    }
+
+    @Override
+    public void onLoad() {
+        if (loadCondition()) {
+            setSwitchItem(newSwitchItem());
+        }
+        super.onLoad();
+    }
+
+    private ItemStack newSwitchItem() {
         Map<Enchantment, Integer> ench = new HashMap<>();
         ench.put(Enchantment.LURE, 1);
 
         List<String> lore = new ArrayList<>();
         lore.add(parseColor("&bDisable this option to remove the chance"));
         lore.add(parseColor("&bto drop the item when player dies"));
+        lore.add(parseColor("&7----------------"));
+        lore.add(parseColor("&9Actual value: &n" + this.configItem.getModules().get(module)));
 
         List<ItemFlag> flags = new ArrayList<>();
         flags.add(ItemFlag.HIDE_ENCHANTS);

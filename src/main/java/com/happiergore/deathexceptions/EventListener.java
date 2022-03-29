@@ -5,10 +5,11 @@ import commands.argsAutocomplete;
 import events.CloseGUI;
 import events.OnClickGUI;
 import events.OnDeathPlayer;
+import events.OnPlayerChat;
 import events.OnRespawnPlayer;
 import helper.TextUtils;
 import helper.VersionManager;
-import sqlite.ItemDB;
+import sqlite.ItemDAO;
 import sqlite.SQLite;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -17,6 +18,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,7 +44,7 @@ public class EventListener extends JavaPlugin implements Listener {
 
         System.out.println(TextUtils.parseColor("&9------------------------------------------------------------------"));
 
-        ItemDB.loadItems();
+        ItemDAO.loadItems();
 
         configYML = getConfig();
 
@@ -77,6 +79,11 @@ public class EventListener extends JavaPlugin implements Listener {
     @EventHandler
     public void InventoryClickEvent(InventoryClickEvent e) {
         OnClickGUI.onInventoryClick(e);
+    }
+
+    @EventHandler
+    public void OnPlayerChat(PlayerChatEvent e) {
+        OnPlayerChat.OnPlayerChat(e);
     }
 
     //***********************

@@ -1,4 +1,4 @@
-package gui.items.modules;
+package gui.modules;
 
 /**
  *

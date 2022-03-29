@@ -1,7 +1,7 @@
 package gui.menus;
 
 import gui.UpdateDBContent;
-import sqlite.ItemDB;
+import sqlite.ItemDAO;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,7 +18,7 @@ public class DBGUI extends GUI {
 
     public DBGUI(Player player) {
         super(player);
-        this.setInventory(Bukkit.createInventory((GUI) this, (int) (Math.ceil((ItemDB.getDBItems().size() / 9.0f) + 0.5)) * 9, "Protected items"));
+        this.setInventory(Bukkit.createInventory((GUI) this, (int) (Math.ceil((ItemDAO.getItemDB().size() / 9.0f) + 0.5)) * 9, "Protected items"));
     }
 
     @Override
@@ -35,13 +35,13 @@ public class DBGUI extends GUI {
     @Override
     public void onOpen() {
         this.getInventory().clear();
-        ItemDB.getDBItems().forEach((t) -> {
-            this.getInventory().addItem(t);
+        ItemDAO.getItemDB().forEach((t) -> {
+            this.getInventory().addItem(t.getItem());
         });
     }
 
     @Override
     public void onClose(InventoryCloseEvent e) {
-        UpdateDBContent.updateDBContent(e);
+        UpdateDBContent.updateItems(e);
     }
 }

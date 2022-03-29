@@ -1,6 +1,6 @@
 package gui.menus;
 
-import gui.items.Back;
+import gui.items.BackDBMenu;
 import gui.items.configMenu.*;
 import gui.items.types.Behaviour;
 import helper.ItemUtils;
@@ -28,7 +28,7 @@ public final class ConfigGUI extends GUI {
         this.getItems().add(new DisableLore(this.getInventory(), 14, this.configureItem));
         this.getItems().add(new DisableEnchants(this.getInventory(), 12, this.configureItem));
         this.getItems().add(new DisableNBT(this.getInventory(), 10, this.configureItem));
-        this.getItems().add(new Back(this.getInventory(), 22, player));
+        this.getItems().add(new BackDBMenu(this.getInventory(), 22, player));
         this.getItems().add(new SeeModules(this.getInventory(), 4, this.configureItem));
 
     }

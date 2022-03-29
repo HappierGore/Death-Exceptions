@@ -1,7 +1,9 @@
 package gui.menus;
 
+import gui.items.BackConfigMenu;
 import gui.items.modulesMenu.enableDropChance;
 import gui.items.types.Behaviour;
+import helper.ItemUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -24,6 +26,7 @@ public final class ModulesGUI extends GUI {
         this.configItem = configItem;
 
         this.getItems().add(new enableDropChance(this.getInventory(), 10, this.configItem));
+        this.getItems().add(new BackConfigMenu(this.getInventory(), 22, player, this.configItem));
     }
 
     @Override
@@ -33,7 +36,10 @@ public final class ModulesGUI extends GUI {
     @Override
     public void onInventoryClick(InventoryClickEvent event) {
         this.getItems().forEach(item -> {
-            ((Behaviour) item).onClick(event);
+            if (ItemUtils.compareItems(item.getItem(), event.getCurrentItem())) {
+                ((Behaviour) item).onClick(event);
+                event.setCancelled(true);
+            }
         });
     }
 

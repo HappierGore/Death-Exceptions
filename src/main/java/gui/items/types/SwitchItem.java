@@ -12,7 +12,7 @@ import org.bukkit.inventory.ItemStack;
 public abstract class SwitchItem extends Behaviour {
 
     private final ItemStack initialItem;
-    private final ItemStack switchItem;
+    private ItemStack switchItem;
 
     public SwitchItem(Inventory inv, int slot) {
         super(inv, slot);
@@ -42,8 +42,16 @@ public abstract class SwitchItem extends Behaviour {
         updateItem();
     }
 
+    public ItemStack getSwitchItem() {
+        return switchItem;
+    }
+
     public abstract boolean loadCondition();
 
     public abstract ItemStack generateSwitchItem();
+
+    public void setSwitchItem(ItemStack switchItem) {
+        this.switchItem = switchItem;
+    }
 
 }

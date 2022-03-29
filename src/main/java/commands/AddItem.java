@@ -1,7 +1,7 @@
 package commands;
 
 import helper.TextUtils;
-import sqlite.ItemDB;
+import sqlite.ItemDAO;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -23,7 +23,7 @@ public class AddItem {
             return;
         }
 
-        if (ItemDB.addItem(player.getInventory().getItemInHand())) {
+        if (ItemDAO.addItem(player.getInventory().getItemInHand())) {
             player.sendMessage(TextUtils.parseColor("&aThis item has been added into exceptions!"));
         } else {
             player.sendMessage(TextUtils.parseColor("&cThis item is already in exceptions list."));

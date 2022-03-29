@@ -14,11 +14,11 @@ import org.bukkit.inventory.ItemStack;
  *
  * @author HappierGore
  */
-public class Back extends Behaviour {
+public class BackDBMenu extends Behaviour {
 
     private final Player player;
 
-    public Back(Inventory inventory, int slot, Player player) {
+    public BackDBMenu(Inventory inventory, int slot, Player player) {
         super(inventory, slot);
         this.player = player;
     }
@@ -36,6 +36,10 @@ public class Back extends Behaviour {
     @Override
     public ItemStack generateMainItem() {
         return ItemUtils.generateItem(null, Material.BARRIER, TextUtils.parseColor("&9Regresar"), null, null);
+    }
+    
+    public Player getPlayer(){
+        return this.player;
     }
 
 }
