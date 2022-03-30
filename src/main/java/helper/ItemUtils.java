@@ -3,6 +3,8 @@ package helper;
 import de.tr7zw.nbtapi.NBTContainer;
 import de.tr7zw.nbtapi.NBTItem;
 import gui.items.ItemFlags;
+import static gui.modules.DropChance.dropChance;
+import gui.modules.Modules;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +24,15 @@ import org.bukkit.inventory.meta.ItemMeta;
 public class ItemUtils {
 
     public static boolean checkModules(ItemStack item) {
+        DEXItem itemDB = ItemDAO.getItemFromDB(item);
+        if (itemDB.getModules().isEmpty()) {
+            return true;
+        }
+
+        if (itemDB.getModules().containsKey(Modules.DropChance)) {
+            return dropChance(Integer.parseInt(itemDB.getModules().get(Modules.DropChance)));
+
+        }
         return false;
     }
 

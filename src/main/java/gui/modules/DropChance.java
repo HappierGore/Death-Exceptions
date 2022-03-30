@@ -6,15 +6,9 @@ package gui.modules;
  */
 public class DropChance {
 
-    private final float dropChance;
-
-    public DropChance(int dropChance) {
-        this.dropChance = dropChance;
-    }
-
-    public boolean dropChance() {
+    public static boolean dropChance(int dropChance) {
         float probability = (float) Math.random() * 100;
-        System.out.println("Chance : " + probability + "\nDropChance: " + this.dropChance);
+        //System.out.println("Chance : " + probability + "| DropChance: " + dropChance);
         return (probability > dropChance);
     }
 }

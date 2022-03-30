@@ -1,12 +1,12 @@
 package sqlite;
 
 import com.happiergore.deathexceptions.EventListener;
-import static helper.IOHelper.ExportResource;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * @author HappierGore
@@ -22,22 +22,24 @@ public abstract class SQLite {
             try {
                 Class.forName("org.sqlite.JDBC").newInstance();
             } catch (InstantiationException | IllegalAccessException ex) {
+                ex.printStackTrace(System.out);
                 return false;
             }
         } catch (ClassNotFoundException ex) {
+            ex.printStackTrace(System.out);
             return false;
         }
 
         File dataFolder = EventListener.getPlugin(EventListener.class).getDataFolder();
-
-        path = "jdbc:sqlite:" + dataFolder.getAbsolutePath().replace('\\', '/') + "/" + DBNAME;
 
         if (!dataFolder.exists()) {
             dataFolder.mkdir();
             //Generar base de datos en caso de que no exista
         }
 
-        generateDB(dataFolder.getAbsolutePath());
+        path = "jdbc:sqlite:" + dataFolder.getAbsolutePath().replace('\\', '/') + "/" + DBNAME;
+
+        generateDB();
 
         CheckUpdatedDB.checkDBVersion();
 
@@ -54,15 +56,16 @@ public abstract class SQLite {
         return conn;
     }
 
-    private static void generateDB(String dataFolderPath) {
-        File dataBase = new File(dataFolderPath + "/" + DBNAME);
+    private static void generateDB() {
 
-        if (!dataBase.exists()) {
-            try {
-                ExportResource("/" + DBNAME, dataFolderPath);
-            } catch (Exception ex) {
-                System.out.println("An error occured when trying to export the database" + ex);
-            }
+        String sql = "CREATE TABLE IF NOT EXISTS " + TABLE + "(\"NBT\" TEXT NOT NULL UNIQUE, \"flags\" TEXT, \"modules\" TEXT, PRIMARY KEY(\"NBT\"))";
+
+        try ( Connection conn = connect();  Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+            stmt.close();
+
+        } catch (SQLException e) {
+            System.out.println("[DataBase] Error while creating database" + e);
         }
     }
 

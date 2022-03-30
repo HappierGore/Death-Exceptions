@@ -2,7 +2,6 @@ package gui.items.modulesMenu;
 
 import gui.items.types.SwitchItem;
 import gui.items.types.TextRequest;
-import gui.menus.GUI;
 import gui.menus.ModulesGUI;
 import gui.modules.Modules;
 import helper.DEXItem;
@@ -19,7 +18,6 @@ import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import sqlite.ItemDAO;
 
 /**
@@ -50,18 +48,17 @@ public class enableDropChance extends SwitchItem {
 
             @Override
             public void onTextEntry(PlayerChatEvent e) {
-                super.onTextEntry(e);
-                int chance = 0;
+                int chance;
                 try {
-                    chance = Integer.parseInt(this.getText());
-                } catch (NumberFormatException ex) {
-                    e.getPlayer().sendMessage(parseColor("&cYou need to specify a valid number between 0 and 100. 0 was used as default."));
-                    chance = 0;
-                } finally {
+                    chance = Integer.parseInt(e.getMessage());
+                    super.onTextEntry(e);
                     this.setText(String.valueOf(chance));
                     configItem.getModules().put(module, String.valueOf(chance));
                     ItemDAO.updateItemInfo(configItem);
-                    ((GUI) getInventory().getHolder()).open();
+                    new ModulesGUI(configItem.getItem(), e.getPlayer()).open();
+                } catch (NumberFormatException ex) {
+                    e.getPlayer().sendMessage(parseColor("&cYou need to specify a valid number between 0 and 100. Please, try again."));
+                    e.setCancelled(true);
                 }
             }
         };
