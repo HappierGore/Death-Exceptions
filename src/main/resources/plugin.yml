@@ -5,7 +5,7 @@ api-version: 1.16
 author: HappierGore
 discord: HappierGore#1197
 prefix: DeathExceptions
-website: https://github.com/HappierGore
+website: https://www.spigotmc.org/resources/authors/happiergore.1046101/
 depend: [NBTAPI]
 commands:     
   deathExceptions:

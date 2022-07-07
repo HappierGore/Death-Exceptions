@@ -1,16 +1,15 @@
 package com.happiergore.deathexceptions;
 
-import commands.DeathExceptions;
-import commands.argsAutocomplete;
-import events.CloseGUI;
-import events.OnClickGUI;
-import events.OnDeathPlayer;
-import events.OnPlayerChat;
-import events.OnRespawnPlayer;
-import helper.TextUtils;
-import helper.VersionManager;
-import sqlite.ItemDAO;
-import sqlite.SQLite;
+import com.happiergore.deathexceptions.commands.DeathExceptions;
+import com.happiergore.deathexceptions.commands.argsAutocomplete;
+import com.happiergore.deathexceptions.events.CloseGUI;
+import com.happiergore.deathexceptions.events.OnClickGUI;
+import com.happiergore.deathexceptions.events.OnDeathPlayer;
+import com.happiergore.deathexceptions.events.OnPlayerChat;
+import com.happiergore.deathexceptions.events.OnRespawnPlayer;
+import com.happiergore.deathexceptions.helper.TextUtils;
+import com.happiergore.deathexceptions.helper.VersionManager;
+import com.happiergore.deathexceptions.sqlite.SQLite;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
@@ -43,8 +42,6 @@ public class EventListener extends JavaPlugin implements Listener {
         }
 
         System.out.println(TextUtils.parseColor("&9------------------------------------------------------------------"));
-
-        ItemDAO.loadItems();
 
         configYML = getConfig();
 
